@@ -691,12 +691,12 @@
 
   <!-- NAV -->
   <nav class="nav">
-    <button class="nav-btn active" onclick="switchView('dashboard')">Dashboard</button>
-    <button class="nav-btn" onclick="switchView('timer')">Timer</button>
-    <button class="nav-btn" onclick="switchView('timetable')">Timetable</button>
-    <button class="nav-btn" onclick="switchView('errors')">Errors</button>
-    <button class="nav-btn" onclick="switchView('log')">Log</button>
-    <button class="nav-btn" onclick="switchView('sync')">Sync</button>
+    <button class="nav-btn active" onclick="switchView('dashboard', this)">Dashboard</button>
+    <button class="nav-btn" onclick="switchView('timer', this)">Timer</button>
+    <button class="nav-btn" onclick="switchView('timetable', this)">Timetable</button>
+    <button class="nav-btn" onclick="switchView('errors', this)">Errors</button>
+    <button class="nav-btn" onclick="switchView('log', this)">Log</button>
+    <button class="nav-btn" onclick="switchView('sync', this)">Sync</button>
   </nav>
 
   <!-- ═══════════════════════════════════ DASHBOARD ═══ -->
@@ -765,6 +765,42 @@
       </div>
     </div>
 
+    <!-- CARS DASHBOARD STRIP -->
+    <div style="background:var(--card);border:1px solid var(--border);border-radius:var(--r);padding:20px;margin-bottom:20px;">
+      <div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:16px;">
+        <div>
+          <div style="font-family:var(--font-mono);font-size:10px;letter-spacing:0.15em;text-transform:uppercase;color:var(--purple);margin-bottom:6px;">CARS Performance</div>
+          <div style="display:flex;align-items:baseline;gap:8px;">
+            <div style="font-family:var(--font-display);font-size:32px;font-weight:700;" id="cars-overall-acc">—</div>
+            <div style="font-family:var(--font-mono);font-size:12px;color:var(--text2);">overall accuracy</div>
+          </div>
+        </div>
+        <div style="display:flex;gap:24px;flex-wrap:wrap;">
+          <div style="text-align:center;">
+            <div style="font-family:var(--font-mono);font-size:10px;color:var(--text3);text-transform:uppercase;letter-spacing:0.1em;margin-bottom:4px;">Passages Done</div>
+            <div style="font-size:22px;font-weight:700;" id="cars-total-passages">0</div>
+          </div>
+          <div style="text-align:center;">
+            <div style="font-family:var(--font-mono);font-size:10px;color:var(--text3);text-transform:uppercase;letter-spacing:0.1em;margin-bottom:4px;">Qs This Week</div>
+            <div style="font-size:22px;font-weight:700;" id="cars-week-qs">0</div>
+          </div>
+          <div style="text-align:center;">
+            <div style="font-family:var(--font-mono);font-size:10px;color:var(--text3);text-transform:uppercase;letter-spacing:0.1em;margin-bottom:4px;">Trend</div>
+            <div style="font-size:22px;font-weight:700;" id="cars-trend">—</div>
+          </div>
+        </div>
+        <div style="font-family:var(--font-mono);font-size:11px;color:var(--text3);max-width:180px;text-align:right;">Target: <strong style="color:var(--purple)">128+ / 132</strong><br>1 passage minimum per session</div>
+      </div>
+      <div class="progress-wrap" style="margin-top:12px;">
+        <div style="display:flex;justify-content:space-between;font-family:var(--font-mono);font-size:9px;color:var(--text3);margin-bottom:4px;">
+          <span>0%</span><span>50% (target floor)</span><span>75%</span><span>90%+</span>
+        </div>
+        <div class="progress-track" style="height:6px;">
+          <div id="cars-progress-bar" style="height:100%;border-radius:99px;background:linear-gradient(90deg,var(--red),var(--purple),var(--green));transition:width 0.8s cubic-bezier(0.4,0,0.2,1);width:0%;"></div>
+        </div>
+      </div>
+    </div>
+
     <!-- Pace Card -->
     <div class="pace-card">
       <div class="section-hdr" style="margin-bottom:12px;">
@@ -787,6 +823,36 @@
       </div>
       <div class="progress-wrap" style="margin-top:14px;">
         <div class="progress-track" style="height:6px;"><div class="progress-fill" id="pace-bar" style="width:0%"></div></div>
+      </div>
+    </div>
+
+    <!-- ANKI HEATMAP -->
+    <div style="background:var(--card);border:1px solid var(--border);border-radius:var(--r);padding:20px;margin-bottom:20px;" id="anki-section">
+      <div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:12px;margin-bottom:14px;">
+        <div>
+          <div style="font-family:var(--font-mono);font-size:10px;letter-spacing:0.15em;text-transform:uppercase;color:var(--blue);margin-bottom:4px;">Anki Review Heatmap</div>
+          <div style="font-family:var(--font-mono);font-size:11px;color:var(--text3);" id="anki-status">Checking Anki connection...</div>
+        </div>
+        <div style="display:flex;gap:20px;flex-wrap:wrap;">
+          <div style="text-align:center;">
+            <div style="font-family:var(--font-mono);font-size:9px;color:var(--text3);text-transform:uppercase;letter-spacing:0.1em;margin-bottom:3px;">Reviewed Today</div>
+            <div style="font-size:24px;font-weight:700;color:var(--blue);" id="anki-reviewed">—</div>
+          </div>
+          <div style="text-align:center;">
+            <div style="font-family:var(--font-mono);font-size:9px;color:var(--text3);text-transform:uppercase;letter-spacing:0.1em;margin-bottom:3px;">Due Now</div>
+            <div style="font-size:24px;font-weight:700;color:var(--gold);" id="anki-due">—</div>
+          </div>
+          <div style="text-align:center;">
+            <div style="font-family:var(--font-mono);font-size:9px;color:var(--text3);text-transform:uppercase;letter-spacing:0.1em;margin-bottom:3px;">New Cards</div>
+            <div style="font-size:24px;font-weight:700;color:var(--green);" id="anki-new">—</div>
+          </div>
+          <div>
+            <button class="btn btn-outline" style="padding:6px 14px;font-size:11px;" onclick="fetchAnkiStats()">↻ Refresh</button>
+          </div>
+        </div>
+      </div>
+      <div id="anki-heatmap" style="overflow-x:auto;padding-bottom:4px;">
+        <div style="color:var(--text3);font-family:var(--font-mono);font-size:11px;">Loading...</div>
       </div>
     </div>
 
@@ -823,6 +889,45 @@
         <option value="Review">Error Review</option>
         <option value="Khan Academy">Khan Academy</option>
       </select>
+
+      <!-- DAILY CARS TRACKER -->
+      <div style="background:var(--bg3);border:1px solid var(--border);border-radius:var(--r2);padding:16px;margin-top:16px;">
+        <div style="font-family:var(--font-mono);font-size:10px;letter-spacing:0.15em;text-transform:uppercase;color:var(--gold);margin-bottom:12px;">Daily CARS Log (Every Session)</div>
+        <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px;margin-bottom:10px;">
+          <div class="form-field">
+            <label class="form-label">Passages Done</label>
+            <input class="form-input" type="number" id="cars-passages" min="0" max="20" placeholder="0" style="text-align:center;font-size:16px;font-weight:700;color:var(--gold);">
+          </div>
+          <div class="form-field">
+            <label class="form-label">Questions Right</label>
+            <input class="form-input" type="number" id="cars-correct" min="0" max="100" placeholder="0" style="text-align:center;font-size:16px;font-weight:700;color:var(--green);">
+          </div>
+          <div class="form-field">
+            <label class="form-label">Questions Total</label>
+            <input class="form-input" type="number" id="cars-total" min="0" max="100" placeholder="0" style="text-align:center;font-size:16px;font-weight:700;">
+          </div>
+        </div>
+        <div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:8px;">
+          <div style="font-family:var(--font-mono);font-size:12px;color:var(--text2);">CARS Accuracy: <strong id="cars-acc-display" style="color:var(--gold);">—</strong></div>
+          <button class="btn btn-outline" style="padding:7px 16px;font-size:12px;" onclick="logCARSDaily()">Log CARS</button>
+        </div>
+      </div>
+
+      <!-- SCORE SNAPSHOT -->
+      <div style="background:var(--bg3);border:1px solid var(--border);border-radius:var(--r2);padding:16px;margin-top:12px;">
+        <div style="font-family:var(--font-mono);font-size:10px;letter-spacing:0.15em;text-transform:uppercase;color:var(--gold);margin-bottom:10px;">Quick Score Update</div>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;">
+          <div class="form-field">
+            <label class="form-label">UWorld % Correct</label>
+            <input class="form-input" type="number" id="timer-uworld-pct" min="0" max="100" placeholder="Enter %" style="font-size:14px;font-weight:700;color:var(--gold);" oninput="syncUWorldPct(this.value)">
+          </div>
+          <div class="form-field">
+            <label class="form-label">Anki Cards Today</label>
+            <input class="form-input" type="number" id="anki-cards-today" min="0" placeholder="0" style="font-size:14px;font-weight:700;color:var(--blue);">
+          </div>
+        </div>
+      </div>
+
       <div class="timer-btns">
         <button class="btn btn-gold" id="start-btn" onclick="startTimer()">Start Session</button>
         <button class="btn btn-red" id="stop-btn" onclick="stopTimer()" style="display:none;">Stop & Log</button>
@@ -1009,6 +1114,8 @@ let state = {
   sessions: [],      // {date, hours, type, notes, id}
   errors: [],        // {date, section, type, source, topic, detail, fix, id}
   completedDays: {}, // {dateStr: true}
+  carsLog: [],       // {date, passages, correct, total, acc}
+  ankiLog: [],       // {date, cards}
   uworldPct: 0,
   gistId: '',
   lastSync: null,
@@ -1030,11 +1137,12 @@ function saveState() {
 // ════════════════════════════════════════════════
 //  NAV
 // ════════════════════════════════════════════════
-function switchView(id) {
+function switchView(id, btn) {
   document.querySelectorAll('.view').forEach(v => v.classList.remove('active'));
   document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
-  document.getElementById('view-' + id).classList.add('active');
-  event.currentTarget.classList.add('active');
+  const viewEl = document.getElementById('view-' + id);
+  if (viewEl) viewEl.classList.add('active');
+  if (btn) btn.classList.add('active');
   refreshView(id);
 }
 
@@ -1137,6 +1245,18 @@ function renderDashboard() {
   document.getElementById('stat-errors').textContent = state.errors.length;
   document.getElementById('stat-errors-sub').textContent = state.errors.filter(e => e.type === 'content').length + ' content gaps';
 
+  // CARS strip
+  const cars = getCARSStats();
+  document.getElementById('cars-overall-acc').textContent = cars.overallAcc !== null ? cars.overallAcc + '%' : '—';
+  document.getElementById('cars-total-passages').textContent = cars.totalPassages;
+  document.getElementById('cars-week-qs').textContent = cars.weekQs;
+  document.getElementById('cars-trend').textContent = cars.trend;
+  document.getElementById('cars-progress-bar').style.width = Math.min(100, cars.overallAcc || 0) + '%';
+
+  // Sync uworld pct to timer tab
+  const timerPct = document.getElementById('timer-uworld-pct');
+  if (timerPct && !timerPct.value) timerPct.value = state.uworldPct || '';
+
   // Pace
   document.getElementById('pace-hrs').textContent = week.toFixed(1) + ' / 34';
   document.getElementById('pace-days').textContent = weekDays;
@@ -1170,6 +1290,9 @@ function renderDashboard() {
   // Score predictor init
   document.getElementById('uworld-pct').value = state.uworldPct || '';
   updateScore();
+
+  // Render anki heatmap from saved data
+  renderAnkiHeatmap();
 }
 
 function renderTodayCard() {
@@ -1235,6 +1358,12 @@ function resetTimer() {
   document.getElementById('timer-display').textContent = '00:00:00';
   document.getElementById('timer-display').classList.remove('running');
   document.getElementById('timer-subject').textContent = 'Ready to study';
+
+  // CARS live accuracy update
+  ['cars-correct', 'cars-total', 'cars-passages'].forEach(id => {
+    const el = document.getElementById(id);
+    if (el) el.addEventListener('input', updateCARSAccDisplay);
+  });
   document.getElementById('stop-btn').style.display = 'none';
   document.getElementById('start-btn').style.display = 'inline-flex';
 }
@@ -1338,56 +1467,56 @@ function deleteError(id) {
 // ════════════════════════════════════════════════
 const SCHEDULE = [
   // WEEK 1
-  {date:'2026-04-07',day:'Mon',start:'2:00 PM',end:'6:00 PM',hrs:4,task:'TBR Bio Ch.1–2: Cell Biology + Anki BB Deck review',resource:'TBR Biology + Anki',phase:'Phase 1',week:1},
-  {date:'2026-04-08',day:'Tue',start:'2:00 PM',end:'6:00 PM',hrs:4,task:'TBR Bio Ch.3–4: Genetics + Anki BB genetics cards',resource:'TBR Biology + Anki',phase:'Phase 1',week:1},
-  {date:'2026-04-09',day:'Wed',start:'2:00 PM',end:'6:00 PM',hrs:4,task:'TBR Bio Ch.5–6: Microbiology + Anki deck',resource:'TBR Biology + Anki',phase:'Phase 1',week:1},
-  {date:'2026-04-10',day:'Thu',start:'2:00 PM',end:'6:00 PM',hrs:4,task:'TBR Bio Ch.7–8: Molecular Biology + Error Log review',resource:'TBR Biology + Anki',phase:'Phase 1',week:1},
-  {date:'2026-04-11',day:'Fri',start:'2:00 PM',end:'6:00 PM',hrs:4,task:'TBR Bio passages (3 passages) + Anki review — Bible Study 6pm',resource:'TBR Bio Qs + Anki',phase:'Phase 1',week:1},
-  {date:'2026-04-12',day:'Sat',start:'2:00 PM',end:'11:00 PM',hrs:8,task:'TBR Biochem Ch.1–4: Amino acids, Enzymes, Metabolism + Anki. Evening: 20 TBR Qs',resource:'TBR Biochem + Anki',phase:'Phase 1',week:1},
-  {date:'2026-04-13',day:'Sun',start:'2:00 PM',end:'8:00 PM',hrs:6,task:'TBR Biochem Ch.5–6: DNA/RNA + Anki. Review Sat errors. Plan Week 2.',resource:'TBR Biochem + Anki',phase:'Phase 1',week:1},
+  {date:'2026-04-07',day:'Mon',start:'2:00 PM',end:'6:00 PM',hrs:4,task:'TBR Bio Ch.1–2: Cell Biology + Anki BB Deck review + 1 CARS passage',resource:'TBR Biology + Anki + CARS',phase:'Phase 1',week:1},
+  {date:'2026-04-08',day:'Tue',start:'2:00 PM',end:'6:00 PM',hrs:4,task:'TBR Bio Ch.3–4: Genetics + Anki BB genetics cards + 1 CARS passage',resource:'TBR Biology + Anki + CARS',phase:'Phase 1',week:1},
+  {date:'2026-04-09',day:'Wed',start:'2:00 PM',end:'6:00 PM',hrs:4,task:'TBR Bio Ch.5–6: Microbiology + Anki deck + 1 CARS passage',resource:'TBR Biology + Anki + CARS',phase:'Phase 1',week:1},
+  {date:'2026-04-10',day:'Thu',start:'2:00 PM',end:'6:00 PM',hrs:4,task:'TBR Bio Ch.7–8: Molecular Biology + Error Log review + 1 CARS passage',resource:'TBR Biology + Anki + CARS',phase:'Phase 1',week:1},
+  {date:'2026-04-11',day:'Fri',start:'2:00 PM',end:'6:00 PM',hrs:4,task:'TBR Bio passages (3 passages) + Anki review — Bible Study 6pm + 1 CARS passage',resource:'TBR Bio Qs + Anki + CARS',phase:'Phase 1',week:1},
+  {date:'2026-04-12',day:'Sat',start:'2:00 PM',end:'11:00 PM',hrs:8,task:'TBR Biochem Ch.1–4: Amino acids, Enzymes, Metabolism + Anki. Evening: 20 TBR Qs + 1 CARS passage',resource:'TBR Biochem + Anki + CARS',phase:'Phase 1',week:1},
+  {date:'2026-04-13',day:'Sun',start:'2:00 PM',end:'8:00 PM',hrs:6,task:'TBR Biochem Ch.5–6: DNA/RNA + Anki. Review Sat errors. Plan Week 2. + 1 CARS passage',resource:'TBR Biochem + Anki + CARS',phase:'Phase 1',week:1},
   // WEEK 2
-  {date:'2026-04-14',day:'Mon',start:'2:00 PM',end:'6:00 PM',hrs:4,task:'TBR Gen Chem Ch.1–2: Stoichiometry, Atomic Structure + Anki',resource:'TBR Gen Chem + Anki',phase:'Phase 1',week:2},
-  {date:'2026-04-15',day:'Tue',start:'2:00 PM',end:'6:00 PM',hrs:4,task:'TBR Gen Chem Ch.3–4: Bonding, Gases + Anki',resource:'TBR Gen Chem + Anki',phase:'Phase 1',week:2},
-  {date:'2026-04-16',day:'Wed',start:'2:00 PM',end:'6:00 PM',hrs:4,task:'TBR Gen Chem Ch.5–6: Thermodynamics, Equilibrium + Anki',resource:'TBR Gen Chem + Anki',phase:'Phase 1',week:2},
-  {date:'2026-04-17',day:'Thu',start:'2:00 PM',end:'6:00 PM',hrs:4,task:'TBR Gen Chem Ch.7–8: Electrochemistry, Solutions + Anki',resource:'TBR Gen Chem + Anki',phase:'Phase 1',week:2},
-  {date:'2026-04-18',day:'Fri',start:'2:00 PM',end:'6:00 PM',hrs:4,task:'TBR Gen Chem passages (3–4) + Error Log — Bible Study 6pm',resource:'TBR Gen Chem Qs',phase:'Phase 1',week:2},
-  {date:'2026-04-19',day:'Sat',start:'2:00 PM',end:'11:00 PM',hrs:8,task:'TBR Org Chem Ch.1–4: Nomenclature, Stereochemistry, Reactions + Anki. Evening: 20 Qs',resource:'TBR Org Chem + Anki',phase:'Phase 1',week:2},
-  {date:'2026-04-20',day:'Sun',start:'2:00 PM',end:'8:00 PM',hrs:6,task:'TBR Org Chem Ch.5–6: Carbonyl, Aromatic + Anki. Review errors. Update Topics Tracker.',resource:'TBR Org Chem + Anki',phase:'Phase 1',week:2},
+  {date:'2026-04-14',day:'Mon',start:'2:00 PM',end:'6:00 PM',hrs:4,task:'TBR Gen Chem Ch.1–2: Stoichiometry, Atomic Structure + Anki + 1 CARS passage',resource:'TBR Gen Chem + Anki + CARS',phase:'Phase 1',week:2},
+  {date:'2026-04-15',day:'Tue',start:'2:00 PM',end:'6:00 PM',hrs:4,task:'TBR Gen Chem Ch.3–4: Bonding, Gases + Anki + 1 CARS passage',resource:'TBR Gen Chem + Anki + CARS',phase:'Phase 1',week:2},
+  {date:'2026-04-16',day:'Wed',start:'2:00 PM',end:'6:00 PM',hrs:4,task:'TBR Gen Chem Ch.5–6: Thermodynamics, Equilibrium + Anki + 1 CARS passage',resource:'TBR Gen Chem + Anki + CARS',phase:'Phase 1',week:2},
+  {date:'2026-04-17',day:'Thu',start:'2:00 PM',end:'6:00 PM',hrs:4,task:'TBR Gen Chem Ch.7–8: Electrochemistry, Solutions + Anki + 1 CARS passage',resource:'TBR Gen Chem + Anki + CARS',phase:'Phase 1',week:2},
+  {date:'2026-04-18',day:'Fri',start:'2:00 PM',end:'6:00 PM',hrs:4,task:'TBR Gen Chem passages (3–4) + Error Log — Bible Study 6pm + 1 CARS passage',resource:'TBR Gen Chem Qs + CARS',phase:'Phase 1',week:2},
+  {date:'2026-04-19',day:'Sat',start:'2:00 PM',end:'11:00 PM',hrs:8,task:'TBR Org Chem Ch.1–4: Nomenclature, Stereochemistry, Reactions + Anki. Evening: 20 Qs + 1 CARS passage',resource:'TBR Org Chem + Anki + CARS',phase:'Phase 1',week:2},
+  {date:'2026-04-20',day:'Sun',start:'2:00 PM',end:'8:00 PM',hrs:6,task:'TBR Org Chem Ch.5–6: Carbonyl, Aromatic + Anki. Review errors. Update Topics Tracker. + 1 CARS passage',resource:'TBR Org Chem + Anki + CARS',phase:'Phase 1',week:2},
   // WEEK 3
-  {date:'2026-04-21',day:'Mon',start:'2:00 PM',end:'6:00 PM',hrs:4,task:'TBR Physics Ch.1–2: Kinematics, Newton\'s Laws + Anki',resource:'TBR Physics + Anki',phase:'Phase 1',week:3},
-  {date:'2026-04-22',day:'Tue',start:'2:00 PM',end:'6:00 PM',hrs:4,task:'TBR Physics Ch.3–4: Work/Energy, Fluids + Anki',resource:'TBR Physics + Anki',phase:'Phase 1',week:3},
-  {date:'2026-04-23',day:'Wed',start:'2:00 PM',end:'6:00 PM',hrs:4,task:'TBR Physics Ch.5–6: Electrostatics, Circuits + Anki',resource:'TBR Physics + Anki',phase:'Phase 1',week:3},
-  {date:'2026-04-24',day:'Thu',start:'2:00 PM',end:'6:00 PM',hrs:4,task:'TBR Physics Ch.7–8: Light/Optics, Waves + Anki + Error log',resource:'TBR Physics + Anki',phase:'Phase 1',week:3},
-  {date:'2026-04-25',day:'Fri',start:'2:00 PM',end:'6:00 PM',hrs:4,task:'P/S: Khan Academy Modules 1–3 + Anki P/S Deck 01–02 — Bible Study 6pm',resource:'Khan P/S + Anki',phase:'Phase 1',week:3},
+  {date:'2026-04-21',day:'Mon',start:'2:00 PM',end:'6:00 PM',hrs:4,task:'TBR Physics Ch.1–2: Kinematics, Newton\ + 1 CARS passage's Laws + Anki',resource:'TBR Physics + Anki + CARS',phase:'Phase 1',week:3},
+  {date:'2026-04-22',day:'Tue',start:'2:00 PM',end:'6:00 PM',hrs:4,task:'TBR Physics Ch.3–4: Work/Energy, Fluids + Anki + 1 CARS passage',resource:'TBR Physics + Anki + CARS',phase:'Phase 1',week:3},
+  {date:'2026-04-23',day:'Wed',start:'2:00 PM',end:'6:00 PM',hrs:4,task:'TBR Physics Ch.5–6: Electrostatics, Circuits + Anki + 1 CARS passage',resource:'TBR Physics + Anki + CARS',phase:'Phase 1',week:3},
+  {date:'2026-04-24',day:'Thu',start:'2:00 PM',end:'6:00 PM',hrs:4,task:'TBR Physics Ch.7–8: Light/Optics, Waves + Anki + Error log + 1 CARS passage',resource:'TBR Physics + Anki + CARS',phase:'Phase 1',week:3},
+  {date:'2026-04-25',day:'Fri',start:'2:00 PM',end:'6:00 PM',hrs:4,task:'P/S: Khan Academy Modules 1–3 + Anki P/S Deck 01–02 — Bible Study 6pm + 1 CARS passage',resource:'Khan P/S + Anki + CARS',phase:'Phase 1',week:3},
   {date:'2026-04-26',day:'Sat',start:'2:00 PM',end:'11:00 PM',hrs:8,task:'P/S: Khan Modules 4–6 + Anki P/S 03–04. Afternoon: 20 mixed TBR Qs. CARS: 1 passage.',resource:'Khan P/S + TBR Qs',phase:'Phase 1',week:3},
   {date:'2026-04-27',day:'Sun',start:'2:00 PM',end:'8:00 PM',hrs:6,task:'FULL REVIEW DAY: Anki all due cards. Update Topics Tracker. Flag weak spots. Plan Phase 2.',resource:'Anki + Review',phase:'Phase 1',week:3},
   // WEEK 4
-  {date:'2026-04-28',day:'Mon',start:'2:00 PM',end:'6:00 PM',hrs:4,task:'UWorld: 40 Qs Bio/Biochem + deep review every wrong answer',resource:'UWorld + TBR',phase:'Phase 2',week:4},
-  {date:'2026-04-29',day:'Tue',start:'2:00 PM',end:'6:00 PM',hrs:4,task:'UWorld: 40 Qs Gen Chem/Org Chem + Anki new cards from errors',resource:'UWorld + Anki',phase:'Phase 2',week:4},
-  {date:'2026-04-30',day:'Wed',start:'2:00 PM',end:'6:00 PM',hrs:4,task:'UWorld: 40 Qs Physics + TBR Physics passages (2)',resource:'UWorld + TBR',phase:'Phase 2',week:4},
-  {date:'2026-05-01',day:'Thu',start:'2:00 PM',end:'6:00 PM',hrs:4,task:'UWorld: 40 Qs P/S + Anki P/S full review',resource:'UWorld + Anki',phase:'Phase 2',week:4},
+  {date:'2026-04-28',day:'Mon',start:'2:00 PM',end:'6:00 PM',hrs:4,task:'UWorld: 40 Qs Bio/Biochem + deep review every wrong answer + 1 CARS passage',resource:'UWorld + TBR + CARS',phase:'Phase 2',week:4},
+  {date:'2026-04-29',day:'Tue',start:'2:00 PM',end:'6:00 PM',hrs:4,task:'UWorld: 40 Qs Gen Chem/Org Chem + Anki new cards from errors + 1 CARS passage',resource:'UWorld + Anki + CARS',phase:'Phase 2',week:4},
+  {date:'2026-04-30',day:'Wed',start:'2:00 PM',end:'6:00 PM',hrs:4,task:'UWorld: 40 Qs Physics + TBR Physics passages (2) + 1 CARS passage',resource:'UWorld + TBR + CARS',phase:'Phase 2',week:4},
+  {date:'2026-05-01',day:'Thu',start:'2:00 PM',end:'6:00 PM',hrs:4,task:'UWorld: 40 Qs P/S + Anki P/S full review + 1 CARS passage',resource:'UWorld + Anki + CARS',phase:'Phase 2',week:4},
   {date:'2026-05-02',day:'Fri',start:'2:00 PM',end:'6:00 PM',hrs:4,task:'CARS: 4 timed passages (35 min each). Score + full review. CARS Error Log. — Bible Study 6pm',resource:'CARS Practice',phase:'Phase 2',week:4},
-  {date:'2026-05-03',day:'Sat',start:'2:00 PM',end:'11:00 PM',hrs:8,task:'UWorld: 80 Qs timed block (full mixed). Review all wrong. Update score predictor.',resource:'UWorld Full Block',phase:'Phase 2',week:4},
-  {date:'2026-05-04',day:'Sun',start:'2:00 PM',end:'8:00 PM',hrs:6,task:'Error review marathon: all UWorld wrong this week. Anki due cards. Rest.',resource:'Error Review + Anki',phase:'Phase 2',week:4},
+  {date:'2026-05-03',day:'Sat',start:'2:00 PM',end:'11:00 PM',hrs:8,task:'UWorld: 80 Qs timed block (full mixed). Review all wrong. Update score predictor. + 1 CARS passage',resource:'UWorld Full Block + CARS',phase:'Phase 2',week:4},
+  {date:'2026-05-04',day:'Sun',start:'2:00 PM',end:'8:00 PM',hrs:6,task:'Error review marathon: all UWorld wrong this week. Anki due cards. Rest. + 1 CARS passage',resource:'Error Review + Anki + CARS',phase:'Phase 2',week:4},
   // WEEK 5
-  {date:'2026-05-05',day:'Mon',start:'2:00 PM',end:'6:00 PM',hrs:4,task:'UWorld: 40 Qs Biochem/Bio targeted (weak spots from Week 4)',resource:'UWorld targeted',phase:'Phase 2',week:5},
-  {date:'2026-05-06',day:'Tue',start:'2:00 PM',end:'6:00 PM',hrs:4,task:'UWorld: 40 Qs Chem targeted + Anki weak-area cards',resource:'UWorld + Anki',phase:'Phase 2',week:5},
-  {date:'2026-05-07',day:'Wed',start:'2:00 PM',end:'6:00 PM',hrs:4,task:'UWorld: 40 Qs Physics + TBR 2 passages',resource:'UWorld + TBR',phase:'Phase 2',week:5},
-  {date:'2026-05-08',day:'Thu',start:'2:00 PM',end:'6:00 PM',hrs:4,task:'UWorld: 40 Qs P/S + Anki P/S + review error trends',resource:'UWorld + P/S',phase:'Phase 2',week:5},
+  {date:'2026-05-05',day:'Mon',start:'2:00 PM',end:'6:00 PM',hrs:4,task:'UWorld: 40 Qs Biochem/Bio targeted (weak spots from Week 4) + 1 CARS passage',resource:'UWorld targeted + CARS',phase:'Phase 2',week:5},
+  {date:'2026-05-06',day:'Tue',start:'2:00 PM',end:'6:00 PM',hrs:4,task:'UWorld: 40 Qs Chem targeted + Anki weak-area cards + 1 CARS passage',resource:'UWorld + Anki + CARS',phase:'Phase 2',week:5},
+  {date:'2026-05-07',day:'Wed',start:'2:00 PM',end:'6:00 PM',hrs:4,task:'UWorld: 40 Qs Physics + TBR 2 passages + 1 CARS passage',resource:'UWorld + TBR + CARS',phase:'Phase 2',week:5},
+  {date:'2026-05-08',day:'Thu',start:'2:00 PM',end:'6:00 PM',hrs:4,task:'UWorld: 40 Qs P/S + Anki P/S + review error trends + 1 CARS passage',resource:'UWorld + P/S + CARS',phase:'Phase 2',week:5},
   {date:'2026-05-09',day:'Fri',start:'2:00 PM',end:'6:00 PM',hrs:4,task:'CARS: 4 timed passages + review. Check score predictor. — Bible Study 6pm',resource:'CARS + Review',phase:'Phase 2',week:5},
-  {date:'2026-05-10',day:'Sat',start:'2:00 PM',end:'11:00 PM',hrs:8,task:'UWorld: 80 Qs timed (full mixed). Deep error review. Anki.',resource:'UWorld Full Block',phase:'Phase 2',week:5},
-  {date:'2026-05-11',day:'Sun',start:'2:00 PM',end:'8:00 PM',hrs:6,task:'Full error review. Anki all due. Update Topics Tracker. REST. Prep for AAMC.',resource:'Review + Anki',phase:'Phase 2',week:5},
+  {date:'2026-05-10',day:'Sat',start:'2:00 PM',end:'11:00 PM',hrs:8,task:'UWorld: 80 Qs timed (full mixed). Deep error review. Anki. + 1 CARS passage',resource:'UWorld Full Block + CARS',phase:'Phase 2',week:5},
+  {date:'2026-05-11',day:'Sun',start:'2:00 PM',end:'8:00 PM',hrs:6,task:'Full error review. Anki all due. Update Topics Tracker. REST. Prep for AAMC. + 1 CARS passage',resource:'Review + Anki + CARS',phase:'Phase 2',week:5},
   // WEEK 6
-  {date:'2026-05-12',day:'Mon',start:'2:00 PM',end:'6:00 PM',hrs:4,task:'AAMC Sample Test: Section 1 Chem/Phys — timed. Review after.',resource:'AAMC Sample',phase:'Phase 3',week:6},
+  {date:'2026-05-12',day:'Mon',start:'2:00 PM',end:'6:00 PM',hrs:4,task:'AAMC Sample Test: Section 1 Chem/Phys — timed. Review after. + 1 CARS passage',resource:'AAMC Sample + CARS',phase:'Phase 3',week:6},
   {date:'2026-05-13',day:'Tue',start:'2:00 PM',end:'6:00 PM',hrs:4,task:'AAMC Sample Test: Section 2 CARS — timed. Full review.',resource:'AAMC Sample',phase:'Phase 3',week:6},
-  {date:'2026-05-14',day:'Wed',start:'2:00 PM',end:'6:00 PM',hrs:4,task:'AAMC Sample Test: Section 3 Bio/Biochem — timed. Review.',resource:'AAMC Sample',phase:'Phase 3',week:6},
-  {date:'2026-05-15',day:'Thu',start:'2:00 PM',end:'6:00 PM',hrs:4,task:'AAMC Sample Test: Section 4 P/S — timed. Full review. Score & analyze.',resource:'AAMC Sample',phase:'Phase 3',week:6},
-  {date:'2026-05-16',day:'Fri',start:'2:00 PM',end:'6:00 PM',hrs:4,task:'AAMC FL #1 Review: all wrong answers. Error log. Anki from errors. — Bible Study 6pm',resource:'AAMC FL Review',phase:'Phase 3',week:6},
-  {date:'2026-05-17',day:'Sat',start:'2:00 PM',end:'11:00 PM',hrs:8,task:'AAMC FL #2: Full-length exam. Simulate real conditions. Score it.',resource:'AAMC FL #2',phase:'Phase 3',week:6},
-  {date:'2026-05-18',day:'Sun',start:'2:00 PM',end:'8:00 PM',hrs:6,task:'AAMC FL #2 Deep Review: all wrong. Anki. Find final weak spots.',resource:'AAMC FL Review',phase:'Phase 3',week:6},
+  {date:'2026-05-14',day:'Wed',start:'2:00 PM',end:'6:00 PM',hrs:4,task:'AAMC Sample Test: Section 3 Bio/Biochem — timed. Review. + 1 CARS passage',resource:'AAMC Sample + CARS',phase:'Phase 3',week:6},
+  {date:'2026-05-15',day:'Thu',start:'2:00 PM',end:'6:00 PM',hrs:4,task:'AAMC Sample Test: Section 4 P/S — timed. Full review. Score & analyze. + 1 CARS passage',resource:'AAMC Sample + CARS',phase:'Phase 3',week:6},
+  {date:'2026-05-16',day:'Fri',start:'2:00 PM',end:'6:00 PM',hrs:4,task:'AAMC FL #1 Review: all wrong answers. Error log. Anki from errors. — Bible Study 6pm + 1 CARS passage',resource:'AAMC FL Review + CARS',phase:'Phase 3',week:6},
+  {date:'2026-05-17',day:'Sat',start:'2:00 PM',end:'11:00 PM',hrs:8,task:'AAMC FL #2: Full-length exam. Simulate real conditions. Score it. + 1 CARS passage',resource:'AAMC FL #2 + CARS',phase:'Phase 3',week:6},
+  {date:'2026-05-18',day:'Sun',start:'2:00 PM',end:'8:00 PM',hrs:6,task:'AAMC FL #2 Deep Review: all wrong. Anki. Find final weak spots. + 1 CARS passage',resource:'AAMC FL Review + CARS',phase:'Phase 3',week:6},
   // WEEK 7
-  {date:'2026-05-19',day:'Mon',start:'2:00 PM',end:'6:00 PM',hrs:4,task:'AAMC FL #3: Sections 1+2 (timed). Review same day.',resource:'AAMC FL #3',phase:'Phase 3',week:7},
-  {date:'2026-05-20',day:'Tue',start:'2:00 PM',end:'6:00 PM',hrs:4,task:'AAMC FL #3: Sections 3+4 (timed). Full score + deep review.',resource:'AAMC FL #3',phase:'Phase 3',week:7},
+  {date:'2026-05-19',day:'Mon',start:'2:00 PM',end:'6:00 PM',hrs:4,task:'AAMC FL #3: Sections 1+2 (timed). Review same day. + 1 CARS passage',resource:'AAMC FL #3 + CARS',phase:'Phase 3',week:7},
+  {date:'2026-05-20',day:'Tue',start:'2:00 PM',end:'6:00 PM',hrs:4,task:'AAMC FL #3: Sections 3+4 (timed). Full score + deep review. + 1 CARS passage',resource:'AAMC FL #3 + CARS',phase:'Phase 3',week:7},
   {date:'2026-05-21',day:'Wed',start:'2:00 PM',end:'6:00 PM',hrs:4,task:'FINAL REVIEW: Anki weak cards only. Flagged topics. Light reading. REST.',resource:'Final Review',phase:'Phase 3',week:7},
   {date:'2026-05-22',day:'Thu',start:'2:00 PM',end:'6:00 PM',hrs:4,task:'EXAM PREP / EXAM DAY — Light Anki only. Confidence review. No new content.',resource:'Exam Prep',phase:'Phase 3',week:7},
 ];
@@ -1573,6 +1702,239 @@ function toast(msg) {
 }
 
 // ════════════════════════════════════════════════
+//  CARS LOGGING
+// ════════════════════════════════════════════════
+function logCARSDaily() {
+  const passages = parseInt(document.getElementById('cars-passages').value) || 0;
+  const correct = parseInt(document.getElementById('cars-correct').value) || 0;
+  const total = parseInt(document.getElementById('cars-total').value) || 0;
+  if (passages === 0 && total === 0) { toast('Enter at least passages or questions'); return; }
+  const acc = total > 0 ? Math.round(correct / total * 100) : null;
+  const dateStr = toDateStr(new Date());
+  // Merge with existing entry for today
+  const existing = state.carsLog.findIndex(c => c.date === dateStr);
+  const entry = { date: dateStr, passages, correct, total, acc, id: uid() };
+  if (existing >= 0) state.carsLog[existing] = { ...state.carsLog[existing], ...entry };
+  else state.carsLog.push(entry);
+  
+  // Also log anki cards if filled
+  const ankiCards = parseInt(document.getElementById('anki-cards-today').value) || 0;
+  if (ankiCards > 0) {
+    const ankiIdx = state.ankiLog.findIndex(a => a.date === dateStr);
+    if (ankiIdx >= 0) state.ankiLog[ankiIdx].cards = ankiCards;
+    else state.ankiLog.push({ date: dateStr, cards: ankiCards, id: uid() });
+  }
+  
+  saveState();
+  document.getElementById('cars-passages').value = '';
+  document.getElementById('cars-correct').value = '';
+  document.getElementById('cars-total').value = '';
+  document.getElementById('anki-cards-today').value = '';
+  updateCARSAccDisplay();
+  toast('CARS logged ✓ — ' + (acc !== null ? acc + '% accuracy' : passages + ' passages'));
+  renderDashboard();
+}
+
+function updateCARSAccDisplay() {
+  const p = parseInt(document.getElementById('cars-passages')?.value) || 0;
+  const c = parseInt(document.getElementById('cars-correct')?.value) || 0;
+  const t = parseInt(document.getElementById('cars-total')?.value) || 0;
+  const el = document.getElementById('cars-acc-display');
+  if (el && t > 0) el.textContent = Math.round(c/t*100) + '%';
+  else if (el) el.textContent = '—';
+}
+
+function syncUWorldPct(val) {
+  state.uworldPct = parseFloat(val) || 0;
+  document.getElementById('uworld-pct').value = val;
+  saveState();
+  updateScore();
+}
+
+function getCARSStats() {
+  const log = state.carsLog || [];
+  const totalPassages = log.reduce((a, c) => a + (c.passages || 0), 0);
+  const totalCorrect = log.reduce((a, c) => a + (c.correct || 0), 0);
+  const totalQs = log.reduce((a, c) => a + (c.total || 0), 0);
+  const overallAcc = totalQs > 0 ? Math.round(totalCorrect / totalQs * 100) : null;
+  
+  // Week stats
+  const now = new Date();
+  const dow = now.getDay();
+  const monday = new Date(now); monday.setDate(now.getDate() - (dow === 0 ? 6 : dow - 1)); monday.setHours(0,0,0,0);
+  const weekLog = log.filter(c => new Date(c.date + 'T12:00:00') >= monday);
+  const weekQs = weekLog.reduce((a, c) => a + (c.total || 0), 0);
+  
+  // Trend: compare last 3 entries accuracy
+  const recent = log.slice(-6);
+  let trend = '—';
+  if (recent.length >= 2) {
+    const first = recent.slice(0, Math.floor(recent.length/2));
+    const last = recent.slice(Math.floor(recent.length/2));
+    const firstAcc = first.reduce((a,c) => a + (c.total > 0 ? c.correct/c.total : 0), 0) / first.length;
+    const lastAcc = last.reduce((a,c) => a + (c.total > 0 ? c.correct/c.total : 0), 0) / last.length;
+    if (lastAcc > firstAcc + 0.03) trend = '↑';
+    else if (lastAcc < firstAcc - 0.03) trend = '↓';
+    else trend = '→';
+  }
+  return { totalPassages, overallAcc, weekQs, trend };
+}
+
+// ════════════════════════════════════════════════
+//  ANKICONNECT INTEGRATION
+//  Works when app is opened as local file (file://)
+//  Falls back to manual entry on GitHub Pages (https://)
+// ════════════════════════════════════════════════
+const ANKI_DECKS = ['MCAT::Biology & Biochemistry', 'MCAT::PS', 'MCAT'];
+
+async function ankiRequest(action, params = {}) {
+  try {
+    const res = await fetch('http://localhost:8765', {
+      method: 'POST',
+      headers: {'Content-Type': 'application/json'},
+      body: JSON.stringify({action, version: 6, params})
+    });
+    const data = await res.json();
+    if (data.error) throw new Error(data.error);
+    return data.result;
+  } catch(e) {
+    return null; // Silently fail on GitHub Pages / mobile
+  }
+}
+
+async function fetchAnkiStats() {
+  const isLocal = location.protocol === 'file:';
+  const ankiSection = document.getElementById('anki-section');
+  const ankiStatus = document.getElementById('anki-status');
+
+  if (!isLocal) {
+    if (ankiStatus) ankiStatus.textContent = 'Manual mode (open as local file for auto-sync)';
+    return;
+  }
+
+  // Test connection
+  const version = await ankiRequest('version');
+  if (!version) {
+    if (ankiStatus) ankiStatus.textContent = 'Anki not open — open Anki then refresh';
+    return;
+  }
+
+  if (ankiStatus) ankiStatus.textContent = 'Connected to Anki v' + version;
+
+  // Get today's review count from all MCAT decks
+  const today = toDateStr(new Date());
+  let totalReviewed = 0, totalDue = 0, totalNew = 0;
+  const deckStats = [];
+
+  // Get all deck names
+  const allDecks = await ankiRequest('deckNames');
+  if (!allDecks) return;
+
+  const mcatDecks = allDecks.filter(d => d.startsWith('MCAT') || d.includes('mcat'));
+
+  for (const deck of mcatDecks) {
+    const stats = await ankiRequest('getDeckStats', {decks: [deck]});
+    if (stats) {
+      const s = Object.values(stats)[0];
+      if (s) {
+        totalDue += s.due || 0;
+        totalNew += s.new_count || 0;
+      }
+    }
+  }
+
+  // Get cards reviewed today using collection stats
+  const collStats = await ankiRequest('getCollectionStatsHTML', {wholeCollection: false});
+
+  // Get review count for today more directly
+  const reviewedCards = await ankiRequest('findCards', {query: 'rated:1'});
+  if (reviewedCards) totalReviewed = reviewedCards.length;
+
+  // Update UI
+  const revEl = document.getElementById('anki-reviewed');
+  const dueEl = document.getElementById('anki-due');
+  const newEl = document.getElementById('anki-new');
+  const heatEl = document.getElementById('anki-heatmap');
+
+  if (revEl) revEl.textContent = totalReviewed;
+  if (dueEl) dueEl.textContent = totalDue;
+  if (newEl) newEl.textContent = totalNew;
+
+  // Save to state for persistence
+  const ankiEntry = {date: today, cards: totalReviewed, due: totalDue, new: totalNew};
+  const idx = (state.ankiLog || []).findIndex(a => a.date === today);
+  if (!state.ankiLog) state.ankiLog = [];
+  if (idx >= 0) state.ankiLog[idx] = {...state.ankiLog[idx], ...ankiEntry};
+  else state.ankiLog.push(ankiEntry);
+  saveState();
+
+  // Build heatmap from ankiLog
+  renderAnkiHeatmap();
+}
+
+function renderAnkiHeatmap() {
+  const el = document.getElementById('anki-heatmap');
+  if (!el) return;
+  const log = state.ankiLog || [];
+  if (log.length === 0) { el.innerHTML = '<div style="color:var(--text3);font-family:var(--font-mono);font-size:11px;">No Anki data yet</div>'; return; }
+
+  // Build 10-week heatmap (70 days)
+  const today = new Date();
+  const days = [];
+  for (let i = 69; i >= 0; i--) {
+    const d = new Date(today);
+    d.setDate(today.getDate() - i);
+    const str = toDateStr(d);
+    const entry = log.find(a => a.date === str);
+    days.push({str, cards: entry ? (entry.cards || 0) : 0, d});
+  }
+
+  const maxCards = Math.max(...days.map(d => d.cards), 1);
+
+  // Group into weeks
+  const weeks = [];
+  for (let i = 0; i < days.length; i += 7) weeks.push(days.slice(i, i + 7));
+
+  const dayLabels = ['M','T','W','T','F','S','S'];
+
+  let html = '<div style="display:flex;gap:3px;align-items:flex-start;">';
+  // Day labels
+  html += '<div style="display:flex;flex-direction:column;gap:3px;margin-top:16px;">';
+  dayLabels.forEach(l => {
+    html += `<div style="width:10px;height:12px;font-family:var(--font-mono);font-size:8px;color:var(--text3);line-height:12px;">${l}</div>`;
+  });
+  html += '</div>';
+
+  weeks.forEach((week, wi) => {
+    const monthLabel = week[0] ? week[0].d.toLocaleDateString('en-US',{month:'short'}) : '';
+    html += `<div style="display:flex;flex-direction:column;gap:3px;">`;
+    // Month label on top
+    html += `<div style="height:14px;font-family:var(--font-mono);font-size:8px;color:var(--text3);white-space:nowrap;">${wi % 2 === 0 ? monthLabel : ''}</div>`;
+    week.forEach(day => {
+      const intensity = day.cards > 0 ? Math.max(0.15, day.cards / maxCards) : 0;
+      const isToday = day.str === toDateStr(new Date());
+      const bg = day.cards === 0
+        ? 'var(--card2)'
+        : `rgba(201,168,76,${intensity})`;
+      const border = isToday ? '1px solid var(--gold)' : '1px solid transparent';
+      const title = `${day.str}: ${day.cards} cards`;
+      html += `<div title="${title}" style="width:12px;height:12px;border-radius:2px;background:${bg};border:${border};cursor:default;transition:transform 0.1s;" onmouseover="this.style.transform='scale(1.3)'" onmouseout="this.style.transform='scale(1)'"></div>`;
+    });
+    html += '</div>';
+  });
+  html += '</div>';
+
+  // Legend
+  html += `<div style="display:flex;align-items:center;gap:6px;margin-top:8px;">
+    <span style="font-family:var(--font-mono);font-size:9px;color:var(--text3);">Less</span>
+    ${[0.1,0.3,0.5,0.7,1.0].map(i => `<div style="width:10px;height:10px;border-radius:2px;background:rgba(201,168,76,${i});"></div>`).join('')}
+    <span style="font-family:var(--font-mono);font-size:9px;color:var(--text3);">More</span>
+  </div>`;
+
+  el.innerHTML = html;
+}
+
+// ════════════════════════════════════════════════
 //  INIT
 // ════════════════════════════════════════════════
 loadState();
@@ -1581,6 +1943,7 @@ setInterval(updateCountdown, 60000);
 renderDashboard();
 renderTimetable();
 renderErrors();
+fetchAnkiStats(); // Auto-fetch from AnkiConnect if Anki is open
 
 // Set today's date in manual log
 document.getElementById('manual-date').value = toDateStr(new Date());

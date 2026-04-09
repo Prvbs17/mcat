@@ -1,0 +1,953 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="theme-color" content="#0a0a0f">
+<title>MCAT -- Jermaine</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=DM+Mono:wght@300;400;500&family=Syne:wght@400;600;700;800&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#0a0a0f;--bg2:#0f0f18;--bg3:#14141f;--card:#16161f;--card2:#1c1c28;--border:#2a2a3a;--border2:#3a3a50;--gold:#c9a84c;--gold2:#e8c46a;--gold-dim:rgba(201,168,76,0.12);--red:#e05252;--red-dim:rgba(224,82,82,0.12);--green:#52c97a;--green-dim:rgba(82,201,122,0.12);--blue:#5b8dee;--blue-dim:rgba(91,141,238,0.12);--purple:#a78bfa;--purple-dim:rgba(167,139,250,0.12);--teal:#2dd4bf;--teal-dim:rgba(45,212,191,0.12);--text:#e8e8f0;--text2:#9090a8;--text3:#5a5a72;--r:12px;--r2:8px}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{background:var(--bg);color:var(--text);font-family:'Syne',sans-serif;min-height:100vh;overflow-x:hidden}
+body::before{content:'';position:fixed;inset:0;z-index:0;pointer-events:none;background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.03'/%3E%3C/svg%3E");opacity:0.4}
+#app{position:relative;z-index:1;max-width:1100px;margin:0 auto;padding:0 20px 90px}
+/* HEADER */
+.hdr{padding:28px 0 20px;border-bottom:1px solid var(--border);margin-bottom:28px;display:flex;align-items:flex-end;justify-content:space-between;gap:16px;flex-wrap:wrap}
+.hdr h1{font-family:'Playfair Display',serif;font-size:clamp(26px,5vw,42px);font-weight:900;letter-spacing:-0.02em;line-height:1}
+.hdr h1 span{color:var(--gold)}
+.hdr-sub{font-family:'DM Mono',monospace;font-size:11px;color:var(--text3);letter-spacing:0.15em;text-transform:uppercase;margin-top:5px}
+.pill{background:var(--gold-dim);border:1px solid var(--gold);border-radius:999px;padding:7px 16px;font-family:'DM Mono',monospace;font-size:12px;color:var(--gold2);display:flex;align-items:center;gap:8px;white-space:nowrap}
+.dot{width:6px;height:6px;border-radius:50%;background:var(--gold);animation:pulse 2s infinite}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:0.3}}
+/* NAV */
+.nav{display:flex;gap:4px;background:var(--card);border:1px solid var(--border);border-radius:var(--r);padding:4px;margin-bottom:24px;overflow-x:auto;scrollbar-width:none}
+.nav::-webkit-scrollbar{display:none}
+.nb{flex:1;min-width:fit-content;padding:9px 14px;border:none;border-radius:var(--r2);background:transparent;color:var(--text2);font-family:'Syne',sans-serif;font-size:13px;font-weight:600;cursor:pointer;transition:all 0.2s;white-space:nowrap}
+.nb:hover{color:var(--text);background:var(--card2)}
+.nb.active{background:var(--gold);color:#000}
+/* VIEWS */
+.view{display:none;animation:fi 0.2s ease}
+.view.active{display:block}
+@keyframes fi{from{opacity:0;transform:translateY(5px)}to{opacity:1;transform:translateY(0)}}
+/* CARDS */
+.card{background:var(--card);border:1px solid var(--border);border-radius:var(--r);padding:22px;transition:border-color 0.2s}
+.card:hover{border-color:var(--border2)}
+.cl{font-family:'DM Mono',monospace;font-size:10px;letter-spacing:0.15em;text-transform:uppercase;color:var(--text3);margin-bottom:8px}
+.cv{font-family:'Playfair Display',serif;font-size:34px;font-weight:700;color:var(--text);line-height:1}
+.cs{font-size:12px;color:var(--text2);margin-top:4px;font-family:'DM Mono',monospace}
+.g4{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:18px}
+.g2{display:grid;grid-template-columns:repeat(2,1fr);gap:12px;margin-bottom:18px}
+@media(max-width:768px){.g4{grid-template-columns:repeat(2,1fr)}}
+@media(max-width:480px){.g4,.g2{grid-template-columns:1fr}}
+.sh{display:flex;align-items:center;justify-content:space-between;margin-bottom:14px}
+.st{font-family:'Playfair Display',serif;font-size:19px;font-weight:700;color:var(--text);letter-spacing:-0.01em}
+.sb{font-family:'DM Mono',monospace;font-size:10px;letter-spacing:0.12em;text-transform:uppercase;padding:3px 10px;border-radius:999px;border:1px solid var(--border2);color:var(--text3)}
+.pt{height:4px;background:var(--card2);border-radius:99px;overflow:hidden;margin-top:10px}
+.pf{height:100%;border-radius:99px;background:linear-gradient(90deg,var(--gold),var(--gold2));transition:width 0.8s cubic-bezier(0.4,0,0.2,1)}
+/* PREDICTOR */
+.pred{background:linear-gradient(135deg,var(--card) 0%,#1a1a2a 100%);border:1px solid var(--border);border-radius:var(--r);padding:26px;margin-bottom:18px;position:relative;overflow:hidden}
+.pred::before{content:'';position:absolute;top:-40px;right:-40px;width:180px;height:180px;background:radial-gradient(circle,rgba(201,168,76,0.08) 0%,transparent 70%);pointer-events:none}
+.score-big{font-family:'Playfair Display',serif;font-size:clamp(60px,10vw,92px);font-weight:900;color:var(--gold);line-height:1;letter-spacing:-0.03em}
+.score-track{height:8px;background:var(--card2);border-radius:99px;overflow:hidden;position:relative;margin-top:14px}
+.score-fill{height:100%;border-radius:99px;background:linear-gradient(90deg,var(--red),var(--gold),var(--green));transition:width 0.8s cubic-bezier(0.4,0,0.2,1)}
+.score-needle{position:absolute;top:-4px;width:2px;height:16px;background:white;border-radius:99px;transition:left 0.8s cubic-bezier(0.4,0,0.2,1);box-shadow:0 0 6px rgba(255,255,255,0.5)}
+.pi{width:80px;background:var(--card2);border:1px solid var(--border2);border-radius:var(--r2);color:var(--gold);font-family:'DM Mono',monospace;font-size:18px;font-weight:500;padding:8px 12px;text-align:center;outline:none;transition:border-color 0.2s}
+.pi:focus{border-color:var(--gold)}
+/* TIMER */
+.tcrd{background:var(--card);border:1px solid var(--border);border-radius:var(--r);padding:26px;text-align:center;margin-bottom:18px}
+.td{font-family:'DM Mono',monospace;font-size:clamp(46px,10vw,78px);font-weight:500;color:var(--text);letter-spacing:0.05em;line-height:1;transition:color 0.3s}
+.td.run{color:var(--gold)}
+.ts{font-family:'DM Mono',monospace;font-size:12px;color:var(--text2);margin-top:8px;letter-spacing:0.1em}
+.tbtns{display:flex;gap:10px;justify-content:center;margin-top:22px;flex-wrap:wrap}
+.btn{padding:11px 26px;border-radius:var(--r2);border:none;font-family:'Syne',sans-serif;font-size:13px;font-weight:700;cursor:pointer;transition:all 0.15s;letter-spacing:0.04em}
+.btn:active{transform:scale(0.97)}
+.btn-gold{background:var(--gold);color:#000}
+.btn-gold:hover{background:var(--gold2)}
+.btn-out{background:transparent;border:1px solid var(--border2);color:var(--text2)}
+.btn-out:hover{border-color:var(--text2);color:var(--text)}
+.btn-red{background:var(--red-dim);border:1px solid var(--red);color:var(--red)}
+.btn-red:hover{background:var(--red);color:white}
+.sel{background:var(--card2);border:1px solid var(--border2);border-radius:var(--r2);color:var(--text);font-family:'Syne',sans-serif;font-size:13px;padding:8px 14px;outline:none;cursor:pointer;transition:border-color 0.2s;width:100%;max-width:300px;margin:10px auto 0;display:block}
+.sel:focus{border-color:var(--gold)}
+/* TIMETABLE */
+.wg{margin-bottom:26px}
+.wh{display:flex;align-items:center;gap:10px;margin-bottom:10px}
+.wl{font-family:'DM Mono',monospace;font-size:10px;letter-spacing:0.15em;text-transform:uppercase;color:var(--text3);white-space:nowrap}
+.wln{flex:1;height:1px;background:var(--border)}
+.wp{font-family:'DM Mono',monospace;font-size:10px;letter-spacing:0.1em;text-transform:uppercase;padding:2px 10px;border-radius:999px;white-space:nowrap}
+.p1{background:rgba(82,201,122,0.1);color:var(--green);border:1px solid rgba(82,201,122,0.3)}
+.p2{background:rgba(91,141,238,0.1);color:var(--blue);border:1px solid rgba(91,141,238,0.3)}
+.p3{background:rgba(224,82,82,0.1);color:var(--red);border:1px solid rgba(224,82,82,0.3)}
+.dr{display:grid;grid-template-columns:90px 40px 1fr auto;align-items:start;gap:10px;padding:12px 0;border-bottom:1px solid var(--border);transition:background 0.15s}
+.dr:last-child{border-bottom:none}
+.dr:hover{background:rgba(255,255,255,0.01)}
+.dr.done .dtsk{text-decoration:line-through;color:var(--text3)}
+.ddt{font-family:'DM Mono',monospace;font-size:11px;color:var(--text3);letter-spacing:0.05em;padding-top:2px}
+.ddt.today{color:var(--gold);font-weight:500}
+.dbg{font-family:'DM Mono',monospace;font-size:9px;font-weight:500;letter-spacing:0.08em;text-transform:uppercase;padding:2px 5px;border-radius:4px;text-align:center}
+.bmon,.btue,.bwed,.bthu{background:rgba(91,141,238,0.1);color:var(--blue)}
+.bfri{background:rgba(167,139,250,0.1);color:var(--purple)}
+.bsat{background:rgba(201,168,76,0.1);color:var(--gold)}
+.bsun{background:rgba(82,201,122,0.1);color:var(--green)}
+.dcnt{min-width:0}
+.dtsk{font-size:13px;font-weight:600;color:var(--text);line-height:1.4;transition:color 0.2s}
+.dmta{font-family:'DM Mono',monospace;font-size:10px;color:var(--text3);margin-top:3px}
+.dchk{width:22px;height:22px;border-radius:6px;border:1.5px solid var(--border2);background:transparent;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:all 0.15s;flex-shrink:0;margin-top:1px}
+.dchk:hover{border-color:var(--gold)}
+.dchk.ok{background:var(--gold);border-color:var(--gold)}
+.dchk.ok::after{content:'\2713';font-size:11px;color:#000;font-weight:700}
+@media(max-width:600px){.dr{grid-template-columns:65px 34px 1fr auto;gap:7px}.dtsk{font-size:12px}}
+/* FORMS */
+.eform{background:var(--card);border:1px solid var(--border);border-radius:var(--r);padding:18px;margin-bottom:18px}
+.fr{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:10px}
+@media(max-width:540px){.fr{grid-template-columns:1fr}}
+.ff{display:flex;flex-direction:column;gap:5px}
+.fl{font-family:'DM Mono',monospace;font-size:10px;letter-spacing:0.12em;text-transform:uppercase;color:var(--text3)}
+.fi,.fsel,.fta{background:var(--card2);border:1px solid var(--border2);border-radius:var(--r2);color:var(--text);font-family:'Syne',sans-serif;font-size:13px;padding:9px 12px;outline:none;transition:border-color 0.2s;width:100%}
+.fi:focus,.fsel:focus,.fta:focus{border-color:var(--gold)}
+.fta{resize:vertical;min-height:65px}
+/* ERROR LIST */
+.elist{display:flex;flex-direction:column;gap:10px}
+.ei{background:var(--card);border:1px solid var(--border);border-left:3px solid var(--red);border-radius:var(--r2);padding:13px 15px;display:grid;grid-template-columns:1fr auto;gap:10px;align-items:start}
+.ei.misread{border-left-color:var(--purple)}
+.ei.content{border-left-color:var(--gold)}
+.ei.calc{border-left-color:var(--blue)}
+.etag{font-family:'DM Mono',monospace;font-size:10px;letter-spacing:0.1em;text-transform:uppercase;color:var(--text3);margin-bottom:3px}
+.ebody{font-size:13px;color:var(--text);line-height:1.5}
+.efix{font-size:12px;color:var(--text2);margin-top:4px;font-family:'DM Mono',monospace}
+.dbtn{background:none;border:none;color:var(--text3);cursor:pointer;font-size:16px;padding:0 4px;transition:color 0.15s}
+.dbtn:hover{color:var(--red)}
+/* LOG TABLE */
+.lt{width:100%;border-collapse:collapse}
+.lt th{font-family:'DM Mono',monospace;font-size:10px;letter-spacing:0.12em;text-transform:uppercase;color:var(--text3);text-align:left;padding:8px 12px;border-bottom:1px solid var(--border)}
+.lt td{padding:10px 12px;color:var(--text2);border-bottom:1px solid var(--border);font-family:'DM Mono',monospace;font-size:12px}
+.lt tr:hover td{background:rgba(255,255,255,0.015)}
+.lt tr:last-child td{border-bottom:none}
+.stag{display:inline-block;padding:2px 8px;border-radius:4px;font-size:10px;font-weight:600;letter-spacing:0.06em}
+.st-tbr{background:rgba(201,168,76,0.1);color:var(--gold)}
+.st-anki{background:rgba(91,141,238,0.1);color:var(--blue)}
+.st-uw{background:rgba(82,201,122,0.1);color:var(--green)}
+.st-aamc{background:rgba(224,82,82,0.1);color:var(--red)}
+.st-cars{background:rgba(167,139,250,0.1);color:var(--purple)}
+.st-khan{background:rgba(45,212,191,0.1);color:var(--teal)}
+.st-rev{background:rgba(255,255,255,0.05);color:var(--text2)}
+/* PACE */
+.pace-card{background:var(--card);border:1px solid var(--border);border-radius:var(--r);padding:18px;margin-bottom:14px}
+.pace-row{display:flex;align-items:center;justify-content:space-between;gap:14px;flex-wrap:wrap}
+.pbadge{font-size:13px;font-weight:700;padding:4px 14px;border-radius:999px}
+.p-on{background:var(--green-dim);color:var(--green);border:1px solid rgba(82,201,122,0.3)}
+.p-beh{background:var(--red-dim);color:var(--red);border:1px solid rgba(224,82,82,0.3)}
+.p-cls{background:rgba(201,168,76,0.1);color:var(--gold);border:1px solid rgba(201,168,76,0.3)}
+/* CARS STRIP */
+.cstrip{background:var(--card);border:1px solid var(--border);border-radius:var(--r);padding:18px;margin-bottom:14px}
+/* CONTENT TRACKER */
+.ct-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(310px,1fr));gap:14px;margin-bottom:18px}
+.ct-book{background:var(--card);border:1px solid var(--border);border-radius:var(--r);padding:16px}
+.ct-title{font-family:'DM Mono',monospace;font-size:10px;letter-spacing:0.12em;text-transform:uppercase;margin-bottom:10px;display:flex;justify-content:space-between;align-items:center}
+.ct-source{font-size:9px;padding:2px 7px;border-radius:4px;margin-left:6px}
+.src-tbr{background:rgba(201,168,76,0.1);color:var(--gold)}
+.src-khan{background:rgba(45,212,191,0.1);color:var(--teal)}
+.ct-sec{display:flex;align-items:center;gap:8px;padding:6px 0;border-bottom:1px solid var(--border)}
+.ct-sec:last-child{border-bottom:none}
+.ct-chk{width:16px;height:16px;border-radius:4px;border:1.5px solid var(--border2);background:transparent;cursor:pointer;display:flex;align-items:center;justify-content:center;flex-shrink:0;transition:all 0.15s}
+.ct-chk:hover{border-color:var(--gold)}
+.ct-chk.ok{background:var(--gold);border-color:var(--gold)}
+.ct-chk.ok::after{content:'\2713';font-size:10px;color:#000;font-weight:700}
+.ct-nm{font-size:12px;color:var(--text);flex:1}
+.ct-qs{font-family:'DM Mono',monospace;font-size:10px;color:var(--text3);margin-left:auto;white-space:nowrap}
+/* GAP BANNER */
+.gap-banner{background:rgba(45,212,191,0.06);border:1px solid rgba(45,212,191,0.3);border-radius:var(--r2);padding:12px 16px;margin-bottom:18px}
+.gap-banner-title{font-family:'DM Mono',monospace;font-size:10px;letter-spacing:0.12em;text-transform:uppercase;color:var(--teal);margin-bottom:6px}
+/* SYNC */
+.sync-card{background:var(--card);border:1px solid var(--border);border-radius:var(--r);padding:20px;margin-bottom:14px}
+.tok-in{background:var(--card2);border:1px solid var(--border2);border-radius:var(--r2);color:var(--text);font-family:'DM Mono',monospace;font-size:12px;padding:9px 12px;width:100%;outline:none;margin-bottom:10px;transition:border-color 0.2s}
+.tok-in:focus{border-color:var(--gold)}
+/* MOBILE */
+@media(max-width:640px){.nav{position:fixed;bottom:0;left:0;right:0;z-index:100;border-radius:0;border-left:none;border-right:none;border-bottom:none;margin:0;padding:5px 6px 8px;padding-bottom:calc(8px + env(safe-area-inset-bottom));background:rgba(10,10,15,0.96);backdrop-filter:blur(20px)}#app{padding-bottom:80px}.nb{font-size:11px;padding:7px 6px}}
+.empty{text-align:center;padding:36px 20px;font-family:'DM Mono',monospace;font-size:12px;color:var(--text3);letter-spacing:0.1em}
+#toast{position:fixed;bottom:24px;left:50%;transform:translateX(-50%) translateY(80px);background:var(--card2);border:1px solid var(--border2);border-radius:var(--r2);padding:11px 20px;font-family:'DM Mono',monospace;font-size:12px;color:var(--text);z-index:9999;transition:transform 0.3s cubic-bezier(0.4,0,0.2,1);white-space:nowrap;box-shadow:0 8px 32px rgba(0,0,0,0.5)}
+#toast.show{transform:translateX(-50%) translateY(0)}
+</style>
+</head>
+<body>
+<div id="app">
+<header class="hdr">
+  <div>
+    <h1>MCAT <span>520</span></h1>
+    <div class="hdr-sub">Jermaine &middot; Target: May 22, 2026</div>
+  </div>
+  <div class="pill"><div class="dot"></div><span id="cd">-- days remaining</span></div>
+</header>
+<nav class="nav">
+  <button class="nb active" onclick="sw('dash',this)">Dashboard</button>
+  <button class="nb" onclick="sw('timer',this)">Timer</button>
+  <button class="nb" onclick="sw('sched',this)">Schedule</button>
+  <button class="nb" onclick="sw('content',this)">Content</button>
+  <button class="nb" onclick="sw('errors',this)">Errors</button>
+  <button class="nb" onclick="sw('log',this)">Log</button>
+  <button class="nb" onclick="sw('sync',this)">Sync</button>
+</nav>
+
+<!-- DASHBOARD -->
+<div id="view-dash" class="view active">
+  <div class="pred">
+    <div style="display:flex;align-items:flex-end;justify-content:space-between;flex-wrap:wrap;gap:14px">
+      <div>
+        <div class="cl">Predicted Score</div>
+        <div class="score-big" id="sc-disp">--</div>
+        <div style="font-family:'DM Mono',monospace;font-size:12px;color:var(--text3);margin-top:4px">Target: <strong style="color:var(--gold)">520+</strong></div>
+      </div>
+      <div style="text-align:right"><div class="cl" style="text-align:right">Score Range</div><div id="sc-range" style="font-size:14px;font-weight:700;color:var(--text2);margin-top:4px">Enter UWorld % to predict</div></div>
+    </div>
+    <div style="display:flex;align-items:center;gap:12px;margin-top:18px">
+      <div style="font-family:'DM Mono',monospace;font-size:11px;letter-spacing:0.12em;text-transform:uppercase;color:var(--text2);white-space:nowrap">UWorld %</div>
+      <input class="pi" type="number" id="uw-pct" min="0" max="100" placeholder="0" oninput="updateScore()">
+      <div style="font-family:'DM Mono',monospace;font-size:11px;color:var(--text3)">Aim for 75%+ to hit 520. Formula: UWorld% x 0.42 + 49.9 + content bonus.</div>
+    </div>
+    <div style="display:flex;justify-content:space-between;font-family:'DM Mono',monospace;font-size:10px;color:var(--text3);margin:14px 0 5px"><span>472</span><span>490</span><span>505</span><span>515</span><span>520+</span><span>528</span></div>
+    <div class="score-track"><div class="score-fill" id="sf" style="width:0%"></div><div class="score-needle" id="sn" style="left:0%"></div></div>
+  </div>
+  <div class="g4">
+    <div class="card"><div class="cl">Hours Logged</div><div class="cv" id="s-hrs">0</div><div class="pt"><div class="pf" id="hrs-bar" style="width:0%"></div></div><div class="cs" id="s-hrs-s">of 280 target</div></div>
+    <div class="card"><div class="cl">This Week</div><div class="cv" id="s-wk">0</div><div class="pt"><div class="pf" id="wk-bar" style="width:0%"></div></div><div class="cs">of 34 hrs target</div></div>
+    <div class="card"><div class="cl">Content Done</div><div class="cv" id="s-ct">0%</div><div class="pt"><div class="pf" id="ct-bar" style="width:0%"></div></div><div class="cs" id="s-ct-s">of all sections</div></div>
+    <div class="card"><div class="cl">Errors Logged</div><div class="cv" id="s-err">0</div><div class="cs" id="s-err-s">log every mistake</div></div>
+  </div>
+  <div class="gap-banner">
+    <div class="gap-banner-title">Khan Academy Gap Coverage</div>
+    <div style="font-size:12px;color:var(--text2);line-height:1.7">These AAMC topics are NOT in your TBR books. They are integrated into your schedule via Khan Academy: <strong style="color:var(--teal)">Biochemistry</strong> (protein structure, enzyme kinetics, amino acids, lipids) &middot; <strong style="color:var(--teal)">P/S</strong> (all 5 foundational concepts) &middot; <strong style="color:var(--teal)">Research Methods</strong> (PCR, gel electrophoresis, blotting, ELISA) &middot; <strong style="color:var(--teal)">Mol Bio Depth</strong> (epigenetics, RNA processing). Track these in the Content tab.</div>
+  </div>
+  <div class="pace-card">
+    <div class="sh" style="margin-bottom:10px"><div class="st" style="font-size:15px">Weekly Pace</div><div class="pbadge" id="pb">Calculating...</div></div>
+    <div class="pace-row">
+      <div><div style="font-family:'DM Mono',monospace;font-size:10px;color:var(--text3);margin-bottom:3px">HRS THIS WEEK</div><div style="font-size:20px;font-weight:700" id="p-hrs">0/34</div></div>
+      <div><div style="font-family:'DM Mono',monospace;font-size:10px;color:var(--text3);margin-bottom:3px">DAYS STUDIED</div><div style="font-size:20px;font-weight:700" id="p-days">0</div></div>
+      <div><div style="font-family:'DM Mono',monospace;font-size:10px;color:var(--text3);margin-bottom:3px">AVG/SESSION</div><div style="font-size:20px;font-weight:700" id="p-avg">--</div></div>
+    </div>
+    <div class="pt" style="margin-top:12px;height:6px"><div class="pf" id="p-bar" style="width:0%"></div></div>
+  </div>
+  <div class="cstrip">
+    <div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:14px;margin-bottom:10px">
+      <div><div style="font-family:'DM Mono',monospace;font-size:10px;letter-spacing:0.15em;text-transform:uppercase;color:var(--purple);margin-bottom:5px">CARS Performance</div><div style="display:flex;align-items:baseline;gap:8px"><div style="font-family:'Playfair Display',serif;font-size:30px;font-weight:700" id="cars-acc">--</div><div style="font-family:'DM Mono',monospace;font-size:12px;color:var(--text2)">overall accuracy</div></div></div>
+      <div style="display:flex;gap:20px;flex-wrap:wrap">
+        <div style="text-align:center"><div style="font-family:'DM Mono',monospace;font-size:10px;color:var(--text3);text-transform:uppercase;margin-bottom:3px">Passages Total</div><div style="font-size:20px;font-weight:700" id="cars-p">0</div></div>
+        <div style="text-align:center"><div style="font-family:'DM Mono',monospace;font-size:10px;color:var(--text3);text-transform:uppercase;margin-bottom:3px">This Week Qs</div><div style="font-size:20px;font-weight:700" id="cars-wq">0</div></div>
+        <div style="text-align:center"><div style="font-family:'DM Mono',monospace;font-size:10px;color:var(--text3);text-transform:uppercase;margin-bottom:3px">Trend</div><div style="font-size:20px;font-weight:700" id="cars-tr">--</div></div>
+      </div>
+    </div>
+    <div class="pt" style="height:6px"><div id="cars-bar" style="height:100%;border-radius:99px;background:linear-gradient(90deg,var(--red),var(--purple),var(--green));width:0%;transition:width 0.8s"></div></div>
+    <div style="font-family:'DM Mono',monospace;font-size:10px;color:var(--text3);margin-top:6px">Target: 128+/132 &middot; Minimum 1 passage every session &middot; Log in Timer tab</div>
+  </div>
+  <div style="background:var(--card);border:1px solid var(--border);border-radius:var(--r);padding:18px;margin-bottom:18px">
+    <div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:10px;margin-bottom:12px">
+      <div><div style="font-family:'DM Mono',monospace;font-size:10px;letter-spacing:0.15em;text-transform:uppercase;color:var(--blue);margin-bottom:4px">Anki Review Heatmap</div><div style="font-family:'DM Mono',monospace;font-size:11px;color:var(--text3)" id="anki-st">Checking connection...</div></div>
+      <div style="display:flex;gap:18px;flex-wrap:wrap">
+        <div style="text-align:center"><div style="font-family:'DM Mono',monospace;font-size:9px;color:var(--text3);text-transform:uppercase;margin-bottom:3px">Today</div><div style="font-size:22px;font-weight:700;color:var(--blue)" id="a-td">--</div></div>
+        <div style="text-align:center"><div style="font-family:'DM Mono',monospace;font-size:9px;color:var(--text3);text-transform:uppercase;margin-bottom:3px">Due</div><div style="font-size:22px;font-weight:700;color:var(--gold)" id="a-du">--</div></div>
+        <div style="text-align:center"><div style="font-family:'DM Mono',monospace;font-size:9px;color:var(--text3);text-transform:uppercase;margin-bottom:3px">New</div><div style="font-size:22px;font-weight:700;color:var(--green)" id="a-nw">--</div></div>
+        <button class="btn btn-out" style="padding:6px 12px;font-size:11px" onclick="fetchAnki()">Refresh</button>
+      </div>
+    </div>
+    <div id="anki-hm" style="overflow-x:auto;padding-bottom:4px"><div style="color:var(--text3);font-family:'DM Mono',monospace;font-size:11px">Loading heatmap...</div></div>
+  </div>
+  <div class="sh"><div class="st">Today</div></div>
+  <div class="card" style="margin-bottom:18px"><div id="today-c">Loading...</div></div>
+  <div class="sh"><div class="st">Recent Sessions</div></div>
+  <div class="card" style="overflow:auto"><table class="lt"><thead><tr><th>Date</th><th>Hrs</th><th>Type</th><th>Notes</th></tr></thead><tbody id="rec-body"></tbody></table></div>
+</div>
+
+<!-- TIMER -->
+<div id="view-timer" class="view">
+  <div class="tcrd">
+    <div class="cl">Session Timer</div>
+    <div class="td" id="t-disp">00:00:00</div>
+    <div class="ts" id="t-sub">Ready to study</div>
+    <select class="sel" id="s-type">
+      <option value="TBR Reading">TBR Reading</option>
+      <option value="TBR Questions">TBR Questions</option>
+      <option value="Khan Academy">Khan Academy</option>
+      <option value="Anki">Anki Review</option>
+      <option value="UWorld">UWorld</option>
+      <option value="AAMC">AAMC Practice</option>
+      <option value="CARS">CARS Practice</option>
+      <option value="Review">Error Review</option>
+    </select>
+    <div class="tbtns">
+      <button class="btn btn-gold" id="btn-start" onclick="startT()">Start Session</button>
+      <button class="btn btn-out" id="btn-pause" onclick="pauseT()" style="display:none">Pause</button>
+      <button class="btn btn-red" id="btn-stop" onclick="stopT()" style="display:none">Stop and Log</button>
+      <button class="btn btn-out" onclick="resetT()">Reset</button>
+    </div>
+  </div>
+  <div class="sh"><div class="st">Daily CARS Log</div><div class="sb">Every session</div></div>
+  <div class="eform">
+    <div class="fr">
+      <div class="ff"><label class="fl">Passages Done</label><input class="fi" type="number" id="cp" min="0" placeholder="0" style="font-size:16px;font-weight:700;color:var(--gold)" oninput="carsLive()"></div>
+      <div class="ff"><label class="fl">Questions Right</label><input class="fi" type="number" id="cc" min="0" placeholder="0" style="font-size:16px;font-weight:700;color:var(--green)" oninput="carsLive()"></div>
+      <div class="ff"><label class="fl">Questions Total</label><input class="fi" type="number" id="ct" min="0" placeholder="0" style="font-size:16px;font-weight:700" oninput="carsLive()"></div>
+      <div class="ff"><label class="fl">Live Accuracy</label><div style="font-size:22px;font-weight:700;color:var(--gold);padding-top:8px" id="c-live">--</div></div>
+    </div>
+    <button class="btn btn-out" style="padding:8px 18px;font-size:12px" onclick="logCARS()">Log CARS</button>
+  </div>
+  <div class="sh"><div class="st">Quick Updates</div></div>
+  <div class="eform">
+    <div class="fr">
+      <div class="ff"><label class="fl">UWorld % Correct</label><input class="fi" type="number" id="uw-q" min="0" max="100" placeholder="%" style="font-size:16px;font-weight:700;color:var(--gold)" oninput="syncUW(this.value)"></div>
+      <div class="ff"><label class="fl">Anki Cards Today</label><input class="fi" type="number" id="anki-m" min="0" placeholder="0" style="font-size:16px;font-weight:700;color:var(--blue)"></div>
+    </div>
+    <button class="btn btn-out" style="padding:8px 18px;font-size:12px" onclick="saveQ()">Save</button>
+  </div>
+  <div class="sh"><div class="st">Log Manual Session</div></div>
+  <div class="eform">
+    <div class="fr">
+      <div class="ff"><label class="fl">Date</label><input class="fi" type="date" id="m-date"></div>
+      <div class="ff"><label class="fl">Hours</label><input class="fi" type="number" id="m-hrs" step="0.25" min="0.25" max="12" placeholder="2.5"></div>
+    </div>
+    <div class="fr">
+      <div class="ff"><label class="fl">Session Type</label><select class="fsel" id="m-type"><option value="TBR Reading">TBR Reading</option><option value="TBR Questions">TBR Questions</option><option value="Khan Academy">Khan Academy</option><option value="Anki">Anki Review</option><option value="UWorld">UWorld</option><option value="AAMC">AAMC Practice</option><option value="CARS">CARS Practice</option><option value="Review">Error Review</option></select></div>
+      <div class="ff"><label class="fl">Notes</label><input class="fi" type="text" id="m-notes" placeholder="e.g. TBR Bio Section I"></div>
+    </div>
+    <button class="btn btn-gold" onclick="logM()">Log Session</button>
+  </div>
+</div>
+
+<!-- SCHEDULE -->
+<div id="view-sched" class="view">
+  <div class="sh"><div class="st">46-Day Study Plan</div><div style="font-family:'DM Mono',monospace;font-size:11px;color:var(--text3)">Apr 7 -- May 22, 2026</div></div>
+  <div style="display:flex;gap:8px;margin-bottom:18px;flex-wrap:wrap">
+    <div class="wp p1">Phase 1: Content (Apr 7-27)</div>
+    <div class="wp p2">Phase 2: UWorld (Apr 28-May 11)</div>
+    <div class="wp p3">Phase 3: AAMC (May 12-22)</div>
+  </div>
+  <div class="gap-banner" style="margin-bottom:16px">
+    <div class="gap-banner-title">Khan Academy Sessions (Teal)</div>
+    <div style="font-size:12px;color:var(--text2)">Khan Academy sessions fill AAMC gaps not covered by TBR: Biochemistry, P/S, Research Methods, and Molecular Biology depth. These are integrated into your daily schedule.</div>
+  </div>
+  <div id="sched-container"></div>
+</div>
+
+<!-- CONTENT TRACKER -->
+<div id="view-content" class="view">
+  <div class="sh"><div class="st">Content Coverage</div><div class="sb" id="ct-badge">0 / 64 sections</div></div>
+  <div style="font-family:'DM Mono',monospace;font-size:11px;color:var(--text3);margin-bottom:8px">TBR: 8 books, 42 sections, 4200 Qs total (100 per section). Khan Academy P/S: 79 topics across 10 AAMC FCs &middot; Khan Academy: 22 gap modules &middot; Total: 64 content units to complete</div>
+  <div class="pt" style="height:8px;margin-bottom:20px"><div class="pf" id="ct-global-bar" style="width:0%"></div></div>
+  <div class="gap-banner" style="margin-bottom:16px">
+    <div class="gap-banner-title">AAMC Gap Coverage via Khan Academy</div>
+    <div style="font-size:12px;color:var(--text2)">Items marked <strong style="color:var(--teal)">KA</strong> are Khan Academy modules covering topics absent from your TBR books but required by the AAMC content outline. Complete these alongside TBR.</div>
+  </div>
+  <div class="ct-grid" id="ct-grid"></div>
+</div>
+
+<!-- ERRORS -->
+<div id="view-errors" class="view">
+  <div class="sh"><div class="st">Error Log</div><div class="sb" id="err-cnt">0 errors</div></div>
+  <div class="eform">
+    <div class="fr">
+      <div class="ff"><label class="fl">Section</label><select class="fsel" id="e-sec"><option>B/B</option><option>C/P</option><option>P/S</option><option>CARS</option></select></div>
+      <div class="ff"><label class="fl">Error Type</label><select class="fsel" id="e-type"><option value="content">Content Gap</option><option value="misread">Misread Question</option><option value="calc">Calculation</option><option value="other">Other</option></select></div>
+    </div>
+    <div class="fr">
+      <div class="ff"><label class="fl">Source</label><select class="fsel" id="e-src"><option>TBR</option><option>UWorld</option><option>AAMC</option><option>Khan Academy</option><option>CARS</option></select></div>
+      <div class="ff"><label class="fl">Topic</label><input class="fi" type="text" id="e-topic" placeholder="e.g. Enzyme Kinetics Km"></div>
+    </div>
+    <div class="ff" style="margin-bottom:10px"><label class="fl">Why I got it wrong</label><textarea class="fta" id="e-detail" placeholder="Describe what you missed..."></textarea></div>
+    <div class="ff" style="margin-bottom:14px"><label class="fl">Fix Plan</label><input class="fi" type="text" id="e-fix" placeholder="e.g. Make Anki card on Km graph shapes"></div>
+    <button class="btn btn-red" onclick="addErr()">Log Error</button>
+  </div>
+  <div class="elist" id="err-list"></div>
+</div>
+
+<!-- LOG -->
+<div id="view-log" class="view">
+  <div class="sh"><div class="st">Time Log</div><div class="sb" id="log-tot">0 hrs</div></div>
+  <div class="card" style="overflow:auto">
+    <table class="lt"><thead><tr><th>Date</th><th>Hours</th><th>Type</th><th>Notes</th><th></th></tr></thead><tbody id="full-log"></tbody></table>
+    <div class="empty" id="log-empty" style="display:none">No sessions yet. Start the timer or add a manual entry.</div>
+  </div>
+</div>
+
+<!-- SYNC -->
+<div id="view-sync" class="view">
+  <div class="sh"><div class="st">Sync Setup</div></div>
+  <div class="sync-card">
+    <div style="display:flex;align-items:center;gap:8px;font-family:'DM Mono',monospace;font-size:12px;color:var(--text2);margin-bottom:14px"><div style="width:8px;height:8px;border-radius:50%;background:var(--text3)" id="sync-dot"></div><span id="sync-txt">Not configured</span></div>
+    <p style="font-size:13px;color:var(--text2);line-height:1.7;margin-bottom:14px">Sync across desktop and phone using a free private GitHub Gist. Works in Brave on all devices.</p>
+    <div style="background:var(--bg3);border:1px solid var(--border);border-radius:var(--r2);padding:14px;margin-bottom:14px">
+      <div style="font-family:'DM Mono',monospace;font-size:11px;color:var(--gold);letter-spacing:0.1em;margin-bottom:8px">SETUP (3 MINUTES)</div>
+      <ol style="font-size:13px;color:var(--text2);line-height:2.2;padding-left:18px">
+        <li>Go to <strong style="color:var(--text)">github.com</strong> &rarr; Settings &rarr; Developer Settings &rarr; Personal Access Tokens &rarr; Tokens (classic)</li>
+        <li>Generate new token &rarr; check <strong style="color:var(--text)">gist</strong> scope only &rarr; copy it</li>
+        <li>Paste below &rarr; Save Token and Sync</li>
+        <li>Open in Brave on phone &rarr; paste same token &rarr; done</li>
+      </ol>
+    </div>
+    <div class="ff" style="margin-bottom:10px"><label class="fl">GitHub Token</label><input class="tok-in" type="password" id="gh-tok" placeholder="ghp_xxxxxxxxxxxxxxxxxxxx"></div>
+    <div class="ff" style="margin-bottom:14px"><label class="fl">Gist ID (auto-filled)</label><input class="tok-in" type="text" id="gh-gist" placeholder="Auto-filled after first sync"></div>
+    <div style="display:flex;gap:10px;flex-wrap:wrap">
+      <button class="btn btn-gold" onclick="saveTok()">Save Token and Sync</button>
+      <button class="btn btn-out" onclick="syncNow()">Sync Now</button>
+      <button class="btn btn-out" onclick="exportD()">Export JSON</button>
+    </div>
+  </div>
+  <div class="sync-card">
+    <div style="font-family:'DM Mono',monospace;font-size:11px;color:var(--gold);letter-spacing:0.1em;margin-bottom:10px">IMPORT DATA</div>
+    <textarea class="fta" id="imp-json" placeholder='Paste exported JSON...' style="min-height:70px;font-family:'DM Mono',monospace;font-size:11px;margin-bottom:10px"></textarea>
+    <button class="btn btn-out" onclick="importD()">Import Data</button>
+  </div>
+  <div class="sync-card">
+    <div style="font-family:'DM Mono',monospace;font-size:11px;color:var(--red);letter-spacing:0.1em;margin-bottom:10px">DANGER ZONE</div>
+    <button class="btn btn-red" onclick="clearAll()">Clear All Data</button>
+  </div>
+</div>
+</div>
+<div id="toast"></div>
+<script>
+'use strict';
+// ═══════════ STATE ═══════════
+var EXAM = new Date('2026-05-22');
+var TOTAL_TARGET = 280;
+var WEEK_TARGET = 34;
+var TOTAL_SECTIONS = 137;
+var state = {sessions:[],errors:[],days:{},carsLog:[],ankiLog:[],content:{},uworldPct:0,gistId:'',lastSync:null};
+
+function loadState(){try{var s=localStorage.getItem('mcat_v2');if(s)state=Object.assign({sessions:[],errors:[],days:{},carsLog:[],ankiLog:[],content:{},uworldPct:0,gistId:'',lastSync:null},JSON.parse(s));}catch(e){}}
+function saveState(){localStorage.setItem('mcat_v2',JSON.stringify(state));autoSync();}
+
+// ═══════════ NAV ═══════════
+function sw(id,btn){
+  document.querySelectorAll('.view').forEach(function(v){v.classList.remove('active');});
+  document.querySelectorAll('.nb').forEach(function(b){b.classList.remove('active');});
+  var el=document.getElementById('view-'+id);
+  if(el)el.classList.add('active');
+  if(btn)btn.classList.add('active');
+  var map={dash:renderDash,log:renderLog,errors:renderErrors,sched:renderSched,content:renderContent,sync:renderSync};
+  if(map[id])map[id]();
+}
+
+// ═══════════ COUNTDOWN ═══════════
+function updateCD(){
+  var d=Math.ceil((EXAM-new Date())/86400000);
+  var el=document.getElementById('cd');
+  if(el)el.textContent=d>0?d+' days to May 22':'Exam day!';
+}
+
+// ═══════════ SCORE ═══════════
+function updateScore(){
+  var pct=parseFloat(document.getElementById('uw-pct').value)||0;
+  state.uworldPct=pct;
+  var done=Object.keys(state.content).length;
+  var contentBonus=Math.round(done/TOTAL_SECTIONS*8);
+  var score=pct>0?Math.min(528,Math.max(472,Math.round(pct*0.42+49.9+contentBonus))):null;
+  var disp=document.getElementById('sc-disp'),range=document.getElementById('sc-range'),fill=document.getElementById('sf'),needle=document.getElementById('sn');
+  if(!score){disp.textContent='--';range.textContent='Enter UWorld % to predict';fill.style.width='0%';needle.style.left='0%';return;}
+  disp.textContent=score;
+  var p=Math.max(0,Math.min(100,((score-472)/56)*100));
+  fill.style.width=p+'%';needle.style.left='calc('+p+'% - 1px)';
+  if(score>=520)range.textContent='520+ Range -- You are there. Keep going.';
+  else if(score>=515)range.textContent='515-519 -- Very close. Tighten weak spots.';
+  else if(score>=510)range.textContent='510-514 -- Building momentum.';
+  else if(score>=505)range.textContent='505-509 -- Needs significant work.';
+  else range.textContent='Below 505 -- Grind harder.';
+}
+function syncUW(v){state.uworldPct=parseFloat(v)||0;var el=document.getElementById('uw-pct');if(el)el.value=v;updateScore();}
+
+// ═══════════ HELPERS ═══════════
+function totalHrs(){return state.sessions.reduce(function(a,s){return a+parseFloat(s.hours||0);},0);}
+function weekHrs(){
+  var now=new Date(),dow=now.getDay(),mon=new Date(now);
+  mon.setDate(now.getDate()-(dow===0?6:dow-1));mon.setHours(0,0,0,0);
+  return state.sessions.filter(function(s){return new Date(s.date)>=mon;}).reduce(function(a,s){return a+parseFloat(s.hours||0);},0);
+}
+function weekDays(){
+  var now=new Date(),dow=now.getDay(),mon=new Date(now);
+  mon.setDate(now.getDate()-(dow===0?6:dow-1));mon.setHours(0,0,0,0);
+  return new Set(state.sessions.filter(function(s){return new Date(s.date)>=mon;}).map(function(s){return s.date;})).size;
+}
+function todayStr(){return toDS(new Date());}
+function toDS(d){return d.getFullYear()+'-'+pad(d.getMonth()+1)+'-'+pad(d.getDate());}
+function pad(n){return String(n).padStart(2,'0');}
+function uid(){return Date.now().toString(36)+Math.random().toString(36).slice(2,6);}
+function fmtD(s){if(!s)return '--';var d=new Date(s+'T12:00:00');return d.toLocaleDateString('en-US',{month:'short',day:'numeric',year:'2-digit'});}
+function fmtSh(s){var d=new Date(s+'T12:00:00');return d.toLocaleDateString('en-US',{month:'short',day:'numeric'});}
+function setEl(id,v){var el=document.getElementById(id);if(el)el.textContent=v;}
+function setBar(id,pct){var el=document.getElementById(id);if(el)el.style.width=Math.min(100,Math.max(0,pct))+'%';}
+function tagCls(t){if(!t)return 'st-rev';var l=t.toLowerCase();if(l.includes('tbr'))return 'st-tbr';if(l.includes('anki'))return 'st-anki';if(l.includes('uworld'))return 'st-uw';if(l.includes('aamc'))return 'st-aamc';if(l.includes('cars'))return 'st-cars';if(l.includes('khan'))return 'st-khan';return 'st-rev';}
+function toast(msg){var el=document.getElementById('toast');el.textContent=msg;el.classList.add('show');setTimeout(function(){el.classList.remove('show');},3000);}
+
+// ═══════════ DASHBOARD ═══════════
+function renderDash(){
+  var tot=totalHrs(),wk=weekHrs(),wd=weekDays();
+  setEl('s-hrs',tot.toFixed(1));setBar('hrs-bar',tot/TOTAL_TARGET*100);
+  setEl('s-hrs-s','of '+TOTAL_TARGET+' ('+Math.round(tot/TOTAL_TARGET*100)+'% done)');
+  setEl('s-wk',wk.toFixed(1));setBar('wk-bar',wk/WEEK_TARGET*100);
+  var done=Object.keys(state.content).length;
+  setEl('s-ct',Math.round(done/TOTAL_SECTIONS*100)+'%');setBar('ct-bar',done/TOTAL_SECTIONS*100);
+  setEl('s-ct-s',done+' of '+TOTAL_SECTIONS+' sections');
+  setEl('s-err',state.errors.length);
+  setEl('s-err-s',state.errors.filter(function(e){return e.type==='content';}).length+' content gaps');
+  setEl('p-hrs',wk.toFixed(1)+'/34');setEl('p-days',wd);
+  var avg=state.sessions.length?(tot/state.sessions.length).toFixed(1)+'hrs':'--';
+  setEl('p-avg',avg);setBar('p-bar',wk/WEEK_TARGET*100);
+  var pb=document.getElementById('pb');
+  if(pb){
+    var schedStart=new Date('2026-04-07');
+    var now=new Date();
+    if(now<schedStart){pb.textContent='Starts Apr 7 -- Get ready!';pb.className='pbadge p-cls';}
+    else{var beh=WEEK_TARGET-wk;if(wk>=WEEK_TARGET){pb.textContent='On Track';pb.className='pbadge p-on';}else if(beh<=8){pb.textContent=beh.toFixed(1)+' hrs to go';pb.className='pbadge p-cls';}else{pb.textContent=beh.toFixed(1)+' hrs behind';pb.className='pbadge p-beh';}}
+  }
+  renderCARSStrip();renderAnkiHM();renderTodayCard();
+  document.getElementById('uw-pct').value=state.uworldPct||'';
+  var uq=document.getElementById('uw-q');if(uq)uq.value=state.uworldPct||'';
+  updateScore();
+  var rb=document.getElementById('rec-body');
+  if(rb){var r=[].concat(state.sessions).reverse().slice(0,5);rb.innerHTML=r.length?r.map(function(s){return '<tr><td>'+fmtD(s.date)+'</td><td style="color:var(--gold);font-weight:600">'+parseFloat(s.hours).toFixed(2)+'</td><td><span class="stag '+tagCls(s.type)+'">'+s.type+'</span></td><td style="color:var(--text2)">'+( s.notes||'--')+'</td></tr>';}).join(''):'<tr><td colspan="4" style="text-align:center;color:var(--text3);font-size:11px;padding:18px">No sessions yet</td></tr>';}
+}
+function renderCARSStrip(){
+  var log=state.carsLog||[],tp=0,tc=0,tq=0;
+  log.forEach(function(c){tp+=c.passages||0;tc+=c.correct||0;tq+=c.total||0;});
+  var acc=tq>0?Math.round(tc/tq*100):null;
+  setEl('cars-acc',acc!==null?acc+'%':'--');setEl('cars-p',tp);
+  var now=new Date(),dow=now.getDay(),mon=new Date(now);
+  mon.setDate(now.getDate()-(dow===0?6:dow-1));mon.setHours(0,0,0,0);
+  var wq=log.filter(function(c){return new Date(c.date+'T12:00:00')>=mon;}).reduce(function(a,c){return a+(c.total||0);},0);
+  setEl('cars-wq',wq);
+  var trend='--';
+  if(log.length>=4){var r=log.slice(-6),h=r.slice(0,Math.floor(r.length/2)),l=r.slice(Math.floor(r.length/2));
+    var ha=h.reduce(function(a,c){return a+(c.total>0?c.correct/c.total:0);},0)/h.length;
+    var la=l.reduce(function(a,c){return a+(c.total>0?c.correct/c.total:0);},0)/l.length;
+    trend=la>ha+0.03?'\u2191':la<ha-0.03?'\u2193':'\u2192';}
+  setEl('cars-tr',trend);
+  var bar=document.getElementById('cars-bar');if(bar)bar.style.width=Math.min(100,acc||0)+'%';
+}
+function renderTodayCard(){
+  var ts=todayStr(),item=SCHED.find(function(s){return s.date===ts;}),el=document.getElementById('today-c');if(!el)return;
+  if(item){var done=state.days[ts];el.innerHTML='<div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:10px"><div><div style="font-family:\'DM Mono\',monospace;font-size:10px;color:var(--text3);letter-spacing:0.1em;text-transform:uppercase;margin-bottom:5px">'+item.day+' -- '+item.hrs+' hrs -- '+item.phase+'</div><div style="font-size:15px;font-weight:700;color:var(--text);line-height:1.4">'+item.task+'</div><div style="font-family:\'DM Mono\',monospace;font-size:10px;color:var(--text3);margin-top:3px">'+item.res+'</div></div><div class="dchk'+(done?' ok':'')+'\" onclick="toggleDay(\''+ts+'\');renderDash()"></div></div>';}
+  else{
+    var schedStart2=new Date('2026-04-07');
+    var now2=new Date();
+    var msg=now2<schedStart2?'Schedule starts TOMORROW (Apr 7). Tonight: review your TBR books, set up Anki, and get 8 hours of sleep. You are ready.':'No scheduled session today. Great time for Anki review or error log.';
+    el.innerHTML='<div style="color:var(--text2);font-size:13px">'+msg+'</div>';
+  }
+}
+
+// ═══════════ TIMER ═══════════
+var tInt=null,tStart=null,tSecs=0,tPaused=false,tPausedSecs=0;
+function startT(){tStart=new Date();tPaused=false;tPausedSecs=0;document.getElementById('btn-start').style.display='none';document.getElementById('btn-pause').style.display='inline-flex';document.getElementById('btn-stop').style.display='inline-flex';document.getElementById('t-disp').classList.add('run');var type=document.getElementById('s-type').value;document.getElementById('t-sub').textContent='Studying: '+type;tInt=setInterval(function(){tSecs=Math.floor((new Date()-tStart)/1000);document.getElementById('t-disp').textContent=fmtSecs(tSecs);},1000);}
+function stopT(){if(!tStart&&!tPaused)return;clearInterval(tInt);var hrs=tSecs/3600,type=document.getElementById('s-type').value;addSess(todayStr(),hrs,type,'');document.getElementById('btn-stop').style.display='none';document.getElementById('btn-pause').style.display='none';document.getElementById('btn-start').style.display='inline-flex';document.getElementById('t-disp').classList.remove('run');document.getElementById('t-disp').textContent='00:00:00';var pb=document.getElementById('btn-pause');pb.textContent='Pause';pb.classList.remove('btn-gold');pb.classList.add('btn-out');document.getElementById('t-sub').textContent='Logged: '+hrs.toFixed(2)+' hrs';tSecs=0;tStart=null;tPaused=false;tPausedSecs=0;toast('Session logged: '+hrs.toFixed(2)+' hrs');}
+function resetT(){clearInterval(tInt);tSecs=0;tStart=null;tPausedSecs=0;tPaused=false;document.getElementById('t-disp').textContent='00:00:00';document.getElementById('t-disp').classList.remove('run');document.getElementById('t-sub').textContent='Ready to study';document.getElementById('btn-stop').style.display='none';document.getElementById('btn-pause').style.display='none';document.getElementById('btn-start').style.display='inline-flex';}
+function pauseT(){
+  var pb=document.getElementById('btn-pause');
+  if(!tPaused){
+    clearInterval(tInt);tPaused=true;tPausedSecs=tSecs;
+    pb.textContent='Resume';pb.classList.add('btn-gold');pb.classList.remove('btn-out');
+    document.getElementById('t-disp').classList.remove('run');
+    document.getElementById('t-sub').textContent='Paused -- '+fmtSecs(tSecs)+' logged so far';
+  } else {
+    tStart=new Date(new Date()-tPausedSecs*1000);tPaused=false;
+    tInt=setInterval(function(){tSecs=Math.floor((new Date()-tStart)/1000);document.getElementById('t-disp').textContent=fmtSecs(tSecs);},1000);
+    pb.textContent='Pause';pb.classList.remove('btn-gold');pb.classList.add('btn-out');
+    document.getElementById('t-disp').classList.add('run');
+    document.getElementById('t-sub').textContent='Studying: '+document.getElementById('s-type').value;
+  }
+}
+function fmtSecs(s){var h=Math.floor(s/3600),m=Math.floor((s%3600)/60),sc=s%60;return pad(h)+':'+pad(m)+':'+pad(sc);}
+
+// ═══════════ CARS ═══════════
+function carsLive(){var c=parseInt(document.getElementById('cc').value)||0,t=parseInt(document.getElementById('ct').value)||0;var el=document.getElementById('c-live');if(el)el.textContent=t>0?Math.round(c/t*100)+'%':'--';}
+function logCARS(){
+  var p=parseInt(document.getElementById('cp').value)||0,c=parseInt(document.getElementById('cc').value)||0,t=parseInt(document.getElementById('ct').value)||0;
+  if(!p&&!t){toast('Enter passages or questions');return;}
+  var acc=t>0?Math.round(c/t*100):null,ds=todayStr();
+  if(!state.carsLog)state.carsLog=[];
+  var idx=state.carsLog.findIndex(function(x){return x.date===ds;});
+  var entry={date:ds,passages:p,correct:c,total:t,acc:acc,id:uid()};
+  if(idx>=0)state.carsLog[idx]=Object.assign(state.carsLog[idx],entry);else state.carsLog.push(entry);
+  saveState();document.getElementById('cp').value='';document.getElementById('cc').value='';document.getElementById('ct').value='';document.getElementById('c-live').textContent='--';
+  toast('CARS logged -- '+(acc!==null?acc+'% accuracy':p+' passages'));renderDash();
+}
+function saveQ(){
+  var pct=parseFloat(document.getElementById('uw-q').value)||0;state.uworldPct=pct;
+  var cards=parseInt(document.getElementById('anki-m').value)||0;
+  if(cards>0){if(!state.ankiLog)state.ankiLog=[];var ds=todayStr(),idx=state.ankiLog.findIndex(function(a){return a.date===ds;});if(idx>=0)state.ankiLog[idx].cards=cards;else state.ankiLog.push({date:ds,cards:cards,id:uid()});}
+  saveState();var el=document.getElementById('uw-pct');if(el)el.value=pct;updateScore();toast('Updates saved');
+}
+
+// ═══════════ SESSIONS ═══════════
+function addSess(date,hours,type,notes){state.sessions.push({id:uid(),date:date,hours:parseFloat(hours).toFixed(2),type:type,notes:notes});saveState();}
+function logM(){var date=document.getElementById('m-date').value,hrs=parseFloat(document.getElementById('m-hrs').value),type=document.getElementById('m-type').value,notes=document.getElementById('m-notes').value;if(!date||!hrs){toast('Enter date and hours');return;}addSess(date,hrs,type,notes);document.getElementById('m-hrs').value='';document.getElementById('m-notes').value='';toast('Session logged');}
+function renderLog(){
+  var tot=totalHrs();setEl('log-tot',tot.toFixed(1)+' hrs total');
+  var body=document.getElementById('full-log'),empty=document.getElementById('log-empty');
+  var sorted=[].concat(state.sessions).sort(function(a,b){return new Date(b.date)-new Date(a.date);});
+  if(!sorted.length){body.innerHTML='';empty.style.display='block';return;}empty.style.display='none';
+  body.innerHTML=sorted.map(function(s){return '<tr><td>'+fmtD(s.date)+'</td><td style="color:var(--gold);font-weight:600">'+parseFloat(s.hours).toFixed(2)+'</td><td><span class="stag '+tagCls(s.type)+'">'+s.type+'</span></td><td style="color:var(--text2)">'+( s.notes||'--')+'</td><td><button class="dbtn" onclick="delSess(\''+s.id+'\')">x</button></td></tr>';}).join('');
+}
+function delSess(id){state.sessions=state.sessions.filter(function(s){return s.id!==id;});saveState();renderLog();}
+
+// ═══════════ ERRORS ═══════════
+function addErr(){
+  var sec=document.getElementById('e-sec').value,type=document.getElementById('e-type').value,src=document.getElementById('e-src').value,topic=document.getElementById('e-topic').value,detail=document.getElementById('e-detail').value,fix=document.getElementById('e-fix').value;
+  if(!detail){toast('Describe what went wrong');return;}
+  state.errors.push({id:uid(),date:todayStr(),section:sec,type:type,source:src,topic:topic,detail:detail,fix:fix});
+  saveState();document.getElementById('e-topic').value='';document.getElementById('e-detail').value='';document.getElementById('e-fix').value='';renderErrors();toast('Error logged');
+}
+function renderErrors(){
+  setEl('err-cnt',state.errors.length+' error'+(state.errors.length!==1?'s':''));
+  var list=document.getElementById('err-list');
+  if(!state.errors.length){list.innerHTML='<div class="empty">No errors yet. Every mistake logged is a point earned.</div>';return;}
+  list.innerHTML=[].concat(state.errors).reverse().map(function(e){return '<div class="ei '+e.type+'"><div><div class="etag">'+e.section+' -- '+e.source+' -- '+fmtD(e.date)+'</div>'+(e.topic?'<div style="font-family:\'DM Mono\',monospace;font-size:11px;color:var(--gold);margin-bottom:3px">'+e.topic+'</div>':'')+'<div class="ebody">'+e.detail+'</div>'+(e.fix?'<div class="efix">Fix: '+e.fix+'</div>':'')+'</div><button class="dbtn" onclick="delErr(\''+e.id+'\')">x</button></div>';}).join('');
+}
+function delErr(id){state.errors=state.errors.filter(function(e){return e.id!==id;});saveState();renderErrors();}
+
+// ═══════════ SCHEDULE DATA ═══════════
+var SCHED=[
+  // WEEK 1: Bio Part I (Physiology) + Biochem gap + P/S FC6A Sensation/Perception start
+  {date:'2026-04-07',day:'Tue',hrs:4,task:'TBR Bio Part I Sec I: Nerve and Muscle -- read + Qs + 1 CARS. AnkiHub: unsuspend Nerve/Muscle cards',res:'TBR Bio I + Anki',phase:'Phase 1',week:1},
+  {date:'2026-04-08',day:'Wed',hrs:4,task:'TBR Bio Part I Sec II: Heart and Lung -- read + Qs + 1 CARS. KHAN P/S FC6A: Visual cues, depth, form, motion; Sensory adaptation and Weber\'s Law',res:'TBR Bio I + Khan PS FC6A',phase:'Phase 1',week:1},
+  {date:'2026-04-09',day:'Thu',hrs:4,task:'TBR Bio Part I Sec III: GI Tract and Kidney -- read + Qs. KHAN Biochem: Amino acid structure and properties. KHAN P/S FC6A: Absolute threshold, signal detection theory, Gestalt principles. 1 CARS.',res:'TBR Bio I + Khan',phase:'Phase 1',week:1},
+  {date:'2026-04-10',day:'Fri',hrs:4,task:'TBR Bio Part I Sec IV: Reproduction and Development -- read + Qs. KHAN Biochem: Protein structure levels (primary/secondary/tertiary/quaternary). KHAN P/S FC6A: Eye structure, phototransduction, photoreceptors, visual field processing. 1 CARS.. Bible Study 6pm',res:'TBR Bio I + Khan',phase:'Phase 1',week:1},
+  {date:'2026-04-11',day:'Sat',hrs:8,task:'TBR Bio Part I Sec V: Endocrinology and Immunology -- read + Qs. KHAN Biochem: Enzyme kinetics: Km, Vmax, inhibition types. KHAN P/S FC6A: Auditory structure and processing, somatosensation, proprioception, pain. 1 CARS. .',res:'TBR Bio I + Khan',phase:'Phase 1',week:1},
+  {date:'2026-04-12',day:'Sun',hrs:6,task:'TBR Bio Part II Sec VI: Cells and Viruses + Sec VII: Metabolic Components -- read + Qs. KHAN Biochem: Lipid structure. KHAN P/S FC6A COMPLETE: Olfaction, gustation, vestibular system. KHAN P/S FC6B start: States of consciousness, sleep stages, circadian rhythms. Anki. 2 CARS.',res:'TBR Bio II + Khan',phase:'Phase 1',week:1},
+  {date:'2026-04-13',day:'Mon',hrs:4,task:'TBR Bio Part II Sec VIII: Metabolic Pathways -- read + Qs. KHAN P/S FC6B: Dreaming, sleep disorders, hypnosis, meditation, psychoactive drugs, reward pathway. KHAN Biochem: Post-translational modifications and protein folding. Error review. 1 CARS.',res:'TBR Bio II + Khan',phase:'Phase 1',week:1},
+  // WEEK 2: Bio Part II finish + Gen Chem I + Research Methods gap + P/S FC6B-6C
+  {date:'2026-04-14',day:'Tue',hrs:4,task:'TBR Bio Part II Sec IX: Genetic Information -- read + Qs. KHAN P/S FC6B: Drug dependence, tolerance, withdrawal; Attention: selective, divided, spotlight model. KHAN Research Methods: PCR and gel electrophoresis. 1 CARS.',res:'TBR Bio II + Khan',phase:'Phase 1',week:2},
+  {date:'2026-04-15',day:'Wed',hrs:4,task:'TBR Bio Part II Sec X: Expression of Genetic Information -- read + Qs. KHAN P/S FC6B COMPLETE: Memory: sensory, working, long-term, encoding, retrieval, forgetting. KHAN Research Methods: Blotting techniques (Southern, Northern, Western) and ELISA. COMPLETE Bio Part II. 1 CARS.',res:'TBR Bio II + Khan',phase:'Phase 1',week:2},
+  {date:'2026-04-16',day:'Thu',hrs:4,task:'TBR Gen Chem Part I Sec I: Stoichiometry + Sec II: Atomic Theory -- read + Qs. KHAN P/S FC6B: Piaget stages, schemas; Problem solving, decision making, intelligence theories. KHAN Research Methods: Chromatography and centrifugation. 1 CARS.',res:'TBR GChem I + Khan',phase:'Phase 1',week:2},
+  {date:'2026-04-17',day:'Fri',hrs:4,task:'TBR Gen Chem Part I Sec III: Periodic Trends + Sec IV: Electrochemistry -- read + Qs. KHAN P/S FC6B COMPLETE: Language, Broca, Wernicke, aphasia, nativist theory. KHAN Mol Bio: Epigenetics and chromatin structure. 1 CARS.. Bible Study 6pm',res:'TBR GChem I + Khan',phase:'Phase 1',week:2},
+  {date:'2026-04-18',day:'Sat',hrs:8,task:'TBR Gen Chem Part I Sec V: Gases and Gas Laws -- read + Qs. KHAN P/S FC6C: Emotions (limbic system, ANS, hemispheres); Theories of emotion: James-Lange, Cannon-Bard, Schachter-Singer. KHAN Mol Bio: RNA processing, splicing, capping. 1 CARS.',res:'TBR GChem I + Khan',phase:'Phase 1',week:2},
+  {date:'2026-04-19',day:'Sun',hrs:6,task:'TBR Gen Chem Part I Sec VI: Phases and Phase Changes -- read + Qs. COMPLETE GChem Part I. KHAN P/S FC6C COMPLETE: Stress, stressors, HPA axis, coping, maladaptive coping; Motivation: drive reduction, Maslow, incentive theory. KHAN Mol Bio: Telomeres, CRISPR overview. Anki. 2 CARS.',res:'TBR GChem I + Khan',phase:'Phase 1',week:2},
+  {date:'2026-04-20',day:'Mon',hrs:4,task:'TBR Gen Chem Part II Sec VII: Solubility + Sec VIII: Acids and Bases -- read + Qs. KHAN P/S FC6D: Components of attitude (ABC model); Attitude influences behavior; Cognitive dissonance. Error review. 1 CARS.',res:'TBR GChem II + Khan PS',phase:'Phase 1',week:2},
+  // WEEK 3: GChem II + Org Chem + P/S FC6D through FC7B
+  {date:'2026-04-21',day:'Tue',hrs:4,task:'TBR Gen Chem Part II Sec IX: Titration Curves + Sec X: Equilibrium -- read + Qs. KHAN P/S FC6D COMPLETE: Persuasion and Elaboration Likelihood Model; Conformity and obedience: Asch and Milgram studies; Groupthink, social facilitation, bystander effect. 1 CARS.',res:'TBR GChem II + Khan PS',phase:'Phase 1',week:3},
+  {date:'2026-04-22',day:'Wed',hrs:4,task:'TBR Gen Chem Part II Sec XI: Thermochemistry + Sec XII: Chemical Kinetics -- read + Qs. KHAN P/S FC7A: Freud, defense mechanisms, id/ego/superego; Humanistic theory; Trait theory (Big Five). COMPLETE GChem Part II. 1 CARS.',res:'TBR GChem II + Khan PS',phase:'Phase 1',week:3},
+  {date:'2026-04-23',day:'Thu',hrs:4,task:'TBR Org Chem Part I Sec I: Molecular Structure + Sec II: Isomers and Stereochemistry -- read + Qs. KHAN P/S FC7A: Social cognitive theory, observational learning (Bobo doll); Self-concept, self-esteem, self-efficacy, locus of control. 1 CARS.',res:'TBR OChem I + Khan PS',phase:'Phase 1',week:3},
+  {date:'2026-04-24',day:'Fri',hrs:4,task:'TBR Org Chem Part I Sec III: Spectroscopy + Sec IV: Lab Techniques -- read + Qs. KHAN P/S FC7A COMPLETE: Reciprocal determinism, learned helplessness; Freud psychosexual, Erikson psychosocial, Kohlberg moral, Vygotsky sociocultural development. COMPLETE OChem Part I. 1 CARS.. Bible Study 6pm',res:'TBR OChem I + Khan PS',phase:'Phase 1',week:3},
+  {date:'2026-04-25',day:'Sat',hrs:8,task:'TBR Org Chem Part II Sec V: Lipids + Sec VI: Carbonyls and Alcohols -- read + Qs. KHAN P/S FC7B: Categories of mental disorders (DSM); Schizophrenia (symptoms, dopamine hypothesis); Depression and bipolar disorder. 1 CARS.',res:'TBR OChem II + Khan PS',phase:'Phase 1',week:3},
+  {date:'2026-04-26',day:'Sun',hrs:6,task:'TBR Org Chem Part II Sec VII: Carbohydrates + Sec VIII: Nitrogen Chemistry -- read + Qs. COMPLETE OChem Part II. KHAN P/S FC7B COMPLETE: Anxiety disorders, OCD; Dissociative and personality disorders; Alzheimer\'s and Parkinson\'s biological basis. Anki all decks. 2 CARS.',res:'TBR OChem II + Khan PS',phase:'Phase 1',week:3},
+  {date:'2026-04-27',day:'Mon',hrs:4,task:'KHAN P/S FC7C COMPLETE: Attribution theory, fundamental attribution error; Stereotypes, stereotype threat; Prejudice and discrimination; Social perception (halo effect, just world hypothesis); Attraction, aggression, altruism, attachment (Harlow). FULL Anki review. Update Content Tracker. Plan Phase 2. 1 CARS.',res:'Khan PS + Anki Review',phase:'Phase 1',week:3},
+  // WEEK 4: Physics + UWorld begins + P/S FC8-9
+  {date:'2026-04-28',day:'Tue',hrs:4,task:'TBR Physics Part I Sec I: Translational Motion + Sec II: Forces and Torque -- read + Qs. KHAN P/S FC8: Nervous system structure and function; Neurotransmitters. UWorld: 40 Qs Bio. 1 CARS.',res:'TBR Phys I + UWorld + Khan PS',phase:'Phase 2',week:4},
+  {date:'2026-04-29',day:'Wed',hrs:4,task:'TBR Physics Part I Sec III: Work and Energy + Sec IV: Periodic Motion -- read + Qs. KHAN P/S FC8: Brain regions (cortex, subcortical, brainstem); Methods of studying the brain. UWorld: 40 Qs GChem. 1 CARS.',res:'TBR Phys I + UWorld + Khan PS',phase:'Phase 2',week:4},
+  {date:'2026-04-30',day:'Thu',hrs:4,task:'TBR Physics Part I Sec V: Fluids and Fluid Dynamics -- read + Qs. COMPLETE Physics Part I. KHAN P/S FC8 COMPLETE: Endocrine system and behavior; Development (prenatal, neonatal, adolescent); Temperament and heritability. UWorld: 40 Qs OChem. 1 CARS.',res:'TBR Phys I + UWorld + Khan PS',phase:'Phase 2',week:4},
+  {date:'2026-05-01',day:'Fri',hrs:4,task:'TBR Physics Part II Sec VI: Electrostatics and Magnetism + Sec VII: Electricity and Circuits -- read + Qs. KHAN P/S FC9 COMPLETE: Classical conditioning (Pavlov); Operant conditioning (reinforcement, punishment, schedules, shaping); Non-associative learning; Biological constraints. UWorld: 40 Qs P/S. 1 CARS.. Bible Study 6pm',res:'TBR Phys II + UWorld + Khan PS',phase:'Phase 2',week:4},
+  {date:'2026-05-02',day:'Sat',hrs:8,task:'CARS Focus: 4 timed passages (35 min each) -- score and full review. KHAN P/S FC10 start: Socialization, agents, folkways, mores; Social theories: functionalism, conflict theory, symbolic interactionism. .',res:'CARS + Khan PS FC10',phase:'Phase 2',week:4},
+  {date:'2026-05-03',day:'Sun',hrs:6,task:'TBR Physics Part II Sec VIII: Sound + Sec IX: Light + Sec X: Optics -- read + Qs. COMPLETE Physics Part II. KHAN P/S FC10: Mead (I and Me), Cooley (looking-glass self); Deviance theories; Social institutions; Organizations and bureaucracy; Status, roles, groups. UWorld: 80 Qs timed block. Anki. 2 CARS.',res:'TBR Phys II + UWorld + Khan PS',phase:'Phase 2',week:4},
+  {date:'2026-05-04',day:'Mon',hrs:4,task:'KHAN P/S FC10 COMPLETE: Demographic structure; Social mobility; Poverty; Health disparities; Environmental justice; Intersectionality; Global inequality; Animal behavior. P/S COMPLETE. ERROR MARATHON: Review all UWorld wrong answers. Anki. 1 CARS.',res:'Khan PS FC10 COMPLETE + Error Review',phase:'Phase 2',week:4},
+  // WEEK 5: UWorld targeted -- all content done, review and reinforce
+  {date:'2026-05-05',day:'Tue',hrs:4,task:'UWorld: 40 Qs Bio/Biochem targeted (weak spots from Week 4). Review any Khan Biochem gaps flagged from UWorld errors. 1 CARS.',res:'UWorld targeted + Anki',phase:'Phase 2',week:5},
+  {date:'2026-05-06',day:'Wed',hrs:4,task:'UWorld: 40 Qs GChem/OChem targeted. Anki weak-area cards. 1 CARS.',res:'UWorld + Anki',phase:'Phase 2',week:5},
+  {date:'2026-05-07',day:'Thu',hrs:4,task:'UWorld: 40 Qs Physics/C/P targeted. Anki. 1 CARS.',res:'UWorld + Anki',phase:'Phase 2',week:5},
+  {date:'2026-05-08',day:'Fri',hrs:4,task:'UWorld: 40 Qs P/S targeted. Anki P/S deck full review across all FC6-FC10. 1 CARS.. Bible Study 6pm',res:'UWorld P/S + Anki',phase:'Phase 2',week:5},
+  {date:'2026-05-09',day:'Sat',hrs:8,task:'CARS Focus: 4 timed passages. Review. Check score predictor. .',res:'CARS + Review',phase:'Phase 2',week:5},
+  {date:'2026-05-10',day:'Sun',hrs:6,task:'UWorld: 80 Qs timed full mixed block. Deep error review. Anki. 2 CARS.',res:'UWorld Full Block',phase:'Phase 2',week:5},
+  {date:'2026-05-11',day:'Mon',hrs:4,task:'Full error review. Anki all due. Update Content Tracker. REST. Prep for AAMC week. 1 CARS.',res:'Review + Anki',phase:'Phase 2',week:5},
+  // WEEK 6: AAMC Full Lengths
+  {date:'2026-05-12',day:'Tue',hrs:4,task:'AAMC Sample Test: Section 1 C/P timed. Full review after.',res:'AAMC Sample',phase:'Phase 3',week:6},
+  {date:'2026-05-13',day:'Wed',hrs:4,task:'AAMC Sample Test: Section 2 CARS timed. Full review.',res:'AAMC Sample',phase:'Phase 3',week:6},
+  {date:'2026-05-14',day:'Thu',hrs:4,task:'AAMC Sample Test: Section 3 B/B timed. Review.',res:'AAMC Sample',phase:'Phase 3',week:6},
+  {date:'2026-05-15',day:'Fri',hrs:4,task:'AAMC Sample Test: Section 4 P/S timed. Score and full analysis.. Bible Study 6pm',res:'AAMC Sample',phase:'Phase 3',week:6},
+  {date:'2026-05-16',day:'Sat',hrs:8,task:'AAMC FL Review: all wrong answers. Error log. Anki cards from errors. .',res:'AAMC FL Review',phase:'Phase 3',week:6},
+  {date:'2026-05-17',day:'Sun',hrs:6,task:'AAMC FL 2: Full-length exam. Simulate real conditions. Score it.',res:'AAMC FL 2',phase:'Phase 3',week:6},
+  {date:'2026-05-18',day:'Mon',hrs:4,task:'AAMC FL 2 Deep Review: all wrong answers. Anki. Final weak spots.',res:'AAMC FL Review',phase:'Phase 3',week:6},
+  // WEEK 7: Final Push
+  {date:'2026-05-19',day:'Tue',hrs:4,task:'AAMC FL 3: Sections 1 and 2 timed. Review same day.',res:'AAMC FL 3',phase:'Phase 3',week:7},
+  {date:'2026-05-20',day:'Wed',hrs:4,task:'AAMC FL 3: Sections 3 and 4 timed. Full score and deep review.',res:'AAMC FL 3',phase:'Phase 3',week:7},
+  {date:'2026-05-21',day:'Thu',hrs:4,task:'FINAL REVIEW: Anki weak cards only. Flagged topics. Light reading. REST.',res:'Final Review',phase:'Phase 3',week:7},
+  {date:'2026-05-22',day:'Fri',hrs:4,task:'EXAM DAY PREP: Light Anki only. Confidence review. No new content.',res:'Exam Prep',phase:'Phase 3',week:7}
+];
+var WK_LABELS={1:'Week 1 (Apr 7-13) -- TBR Bio I and II + Biochem gaps via Khan',2:'Week 2 (Apr 14-20) -- TBR Bio II finish + GChem I + Research Methods + P/S start via Khan',3:'Week 3 (Apr 21-27) -- TBR GChem II + Org Chem + P/S complete via Khan',4:'Week 4 (Apr 28-May 4) -- TBR Physics + UWorld begins',5:'Week 5 (May 5-11) -- UWorld Targeted + CARS',6:'Week 6 (May 12-18) -- AAMC Full Lengths',7:'Week 7 (May 19-22) -- Final Push'};
+
+function renderSched(){
+  var c=document.getElementById('sched-container');if(!c)return;
+  var ts=todayStr(),cur=0,html='';
+  SCHED.forEach(function(item){
+    if(item.week!==cur){if(cur>0)html+='</div>';cur=item.week;var pn=item.phase==='Phase 1'?'1':item.phase==='Phase 2'?'2':'3';html+='<div class="wg"><div class="wh"><div class="wl">'+WK_LABELS[item.week]+'</div><div class="wln"></div><div class="wp p'+pn+'">'+item.phase+'</div></div>';}
+    var isT=item.date===ts,done=state.days[item.date],dl=item.day.toLowerCase();
+    var hasKhan=item.res.toLowerCase().includes('khan');
+    html+='<div class="dr'+(done?' done':'')+'\">';
+    html+='<div class="ddt'+(isT?' today':'')+'">'+fmtSh(item.date)+(isT?' &larr;':'')+'</div>';
+    html+='<div class="dbg b'+dl+'">'+item.day+'</div>';
+    html+='<div class="dcnt"><div class="dtsk">'+item.task+'</div><div class="dmta">'+item.hrs+'hrs -- '+item.res+(hasKhan?' <span style="color:var(--teal);font-weight:600">[KA Gap]</span>':'')+'</div></div>';
+    html+='<div class="dchk'+(done?' ok':'')+'\" onclick="toggleDay(\''+item.date+'\');renderSched()"></div></div>';
+  });
+  html+='</div>';c.innerHTML=html;
+}
+function toggleDay(ds){if(state.days[ds])delete state.days[ds];else state.days[ds]=true;saveState();}
+
+// ═══════════ CONTENT TRACKER ═══════════
+var CONTENT_BOOKS=[
+  // TBR Bio
+  {id:'bio1',title:'TBR Bio Part I -- Physiology',src:'tbr',color:'var(--green)',secs:[
+    {id:'b1s1',name:'Sec I: Nerve and Muscle',qs:100},{id:'b1s2',name:'Sec II: Heart and Lung',qs:100},
+    {id:'b1s3',name:'Sec III: GI Tract and Kidney',qs:100},{id:'b1s4',name:'Sec IV: Reproduction and Development',qs:100},
+    {id:'b1s5',name:'Sec V: Endocrinology and Immunology',qs:100}
+  ]},
+  {id:'bio2',title:'TBR Bio Part II -- Biochem and Molecular',src:'tbr',color:'var(--green)',secs:[
+    {id:'b2s6',name:'Sec VI: Structure and Function in Cells and Viruses',qs:100},{id:'b2s7',name:'Sec VII: Metabolic Components',qs:100},
+    {id:'b2s8',name:'Sec VIII: Metabolic Pathways',qs:100},{id:'b2s9',name:'Sec IX: Genetic Information',qs:100},
+    {id:'b2s10',name:'Sec X: Expression of Genetic Information',qs:100}
+  ]},
+  // TBR GChem
+  {id:'gc1',title:'TBR Gen Chem Part I -- Sections I-VI',src:'tbr',color:'var(--blue)',secs:[
+    {id:'g1s1',name:'Sec I: Stoichiometry',qs:100},{id:'g1s2',name:'Sec II: Atomic Theory',qs:100},
+    {id:'g1s3',name:'Sec III: Periodic Trends',qs:100},{id:'g1s4',name:'Sec IV: Electrochemistry',qs:100},
+    {id:'g1s5',name:'Sec V: Gases and Gas Laws',qs:100},{id:'g1s6',name:'Sec VI: Phases and Phase Changes',qs:100}
+  ]},
+  {id:'gc2',title:'TBR Gen Chem Part II -- Sections VII-XII',src:'tbr',color:'var(--blue)',secs:[
+    {id:'g2s7',name:'Sec VII: Solubility',qs:100},{id:'g2s8',name:'Sec VIII: Acids and Bases',qs:100},
+    {id:'g2s9',name:'Sec IX: Titration Curves',qs:100},{id:'g2s10',name:'Sec X: Equilibrium',qs:100},
+    {id:'g2s11',name:'Sec XI: Thermochemistry',qs:100},{id:'g2s12',name:'Sec XII: Chemical Kinetics',qs:100}
+  ]},
+  // TBR Org Chem
+  {id:'oc1',title:'TBR Org Chem Part I -- Sections I-IV',src:'tbr',color:'var(--gold)',secs:[
+    {id:'o1s1',name:'Sec I: Molecular Structure',qs:100},{id:'o1s2',name:'Sec II: Isomers and Stereochemistry',qs:100},
+    {id:'o1s3',name:'Sec III: Spectroscopy',qs:100},{id:'o1s4',name:'Sec IV: Lab Techniques',qs:100}
+  ]},
+  {id:'oc2',title:'TBR Org Chem Part II -- Sections V-VIII',src:'tbr',color:'var(--gold)',secs:[
+    {id:'o2s5',name:'Sec V: Lipids',qs:100},{id:'o2s6',name:'Sec VI: Carbonyls and Alcohols',qs:100},
+    {id:'o2s7',name:'Sec VII: Carbohydrates',qs:100},{id:'o2s8',name:'Sec VIII: Nitrogen Chemistry',qs:100}
+  ]},
+  // TBR Physics
+  {id:'ph1',title:'TBR Physics Part I -- Sections I-V',src:'tbr',color:'var(--purple)',secs:[
+    {id:'p1s1',name:'Sec I: Translational Motion',qs:100},{id:'p1s2',name:'Sec II: Forces and Torque',qs:100},
+    {id:'p1s3',name:'Sec III: Work and Energy',qs:100},{id:'p1s4',name:'Sec IV: Periodic Motion',qs:100},
+    {id:'p1s5',name:'Sec V: Fluids and Fluid Dynamics',qs:100}
+  ]},
+  {id:'ph2',title:'TBR Physics Part II -- Sections VI-X',src:'tbr',color:'var(--purple)',secs:[
+    {id:'p2s6',name:'Sec VI: Electrostatics and Magnetism',qs:100},{id:'p2s7',name:'Sec VII: Electricity and Circuits',qs:100},
+    {id:'p2s8',name:'Sec VIII: Sound and Doppler Effect',qs:100},{id:'p2s9',name:'Sec IX: Light and Radiation',qs:100},
+    {id:'p2s10',name:'Sec X: Geometrical Optics',qs:100}
+  ]},
+  // Khan Academy GAP MODULES
+  {id:'ka-biochem',title:'Khan Academy -- Biochemistry (AAMC Gap)',src:'khan',color:'var(--teal)',secs:[
+    {id:'ka-b1',name:'Amino acid structure and properties (20 AA)',qs:0},{id:'ka-b2',name:'Protein structure: primary, secondary, tertiary, quaternary',qs:0},
+    {id:'ka-b3',name:'Enzyme kinetics: Km, Vmax, inhibition types',qs:0},{id:'ka-b4',name:'Lipid structure: fatty acids, phospholipids, steroids',qs:0},
+    {id:'ka-b5',name:'Post-translational modifications and protein folding',qs:0}
+  ]},
+  {id:'ka-ps-1',title:'P/S: FC6A -- Sensation and Perception',src:'khan',color:'var(--teal)',secs:[
+    {id:'ps-6a-1',name:'Visual cues, depth, form, motion, constancy',qs:0},
+    {id:'ps-6a-2',name:'Sensory adaptation and Weber\'s Law',qs:0},
+    {id:'ps-6a-3',name:'Absolute threshold and signal detection theory',qs:0},
+    {id:'ps-6a-4',name:'Bottom-up vs top-down processing, Gestalt principles',qs:0},
+    {id:'ps-6a-5',name:'Structure of the eye and phototransduction cascade',qs:0},
+    {id:'ps-6a-6',name:'Photoreceptors, visual field processing, feature detection',qs:0},
+    {id:'ps-6a-7',name:'Auditory structure and processing',qs:0},
+    {id:'ps-6a-8',name:'Somatosensation, proprioception, pain, temperature',qs:0},
+    {id:'ps-6a-9',name:'Olfaction, gustation, vestibular system',qs:0}
+  ]},
+  {id:'ka-ps-2',title:'P/S: FC6B -- Consciousness and Cognition',src:'khan',color:'var(--teal)',secs:[
+    {id:'ps-6b-1',name:'States of consciousness, sleep stages, circadian rhythms',qs:0},
+    {id:'ps-6b-2',name:'Dreaming and sleep disorders',qs:0},
+    {id:'ps-6b-3',name:'Hypnosis, meditation, psychoactive drugs',qs:0},
+    {id:'ps-6b-4',name:'Drug dependence, tolerance, withdrawal, reward pathway',qs:0},
+    {id:'ps-6b-5',name:'Attention: selective, divided, spotlight model',qs:0},
+    {id:'ps-6b-6',name:'Memory: sensory, working, long-term; encoding strategies',qs:0},
+    {id:'ps-6b-7',name:'Retrieval cues, forgetting, decay, interference',qs:0},
+    {id:'ps-6b-8',name:'Piaget stages, schemas, assimilation, accommodation',qs:0},
+    {id:'ps-6b-9',name:'Problem solving, decision making, intelligence theories',qs:0},
+    {id:'ps-6b-10',name:'Language: Broca, Wernicke, aphasia, nativist theory',qs:0}
+  ]},
+  {id:'ka-ps-3',title:'P/S: FC6C -- Emotion, Stress and Motivation',src:'khan',color:'var(--teal)',secs:[
+    {id:'ps-6c-1',name:'Emotions: limbic system, cerebral hemispheres, ANS markers',qs:0},
+    {id:'ps-6c-2',name:'Theories of emotion: James-Lange, Cannon-Bard, Schachter-Singer',qs:0},
+    {id:'ps-6c-3',name:'Stress, stressors, stress response, cortisol, HPA axis',qs:0},
+    {id:'ps-6c-4',name:'Coping mechanisms, stress management, maladaptive coping',qs:0},
+    {id:'ps-6c-5',name:'Motivation: drive reduction, Maslow hierarchy, incentive theory',qs:0},
+    {id:'ps-6c-6',name:'Instincts, arousal, biological and sociocultural factors',qs:0}
+  ]},
+  {id:'ka-ps-4',title:'P/S: FC6D -- Attitude and Behavior Change',src:'khan',color:'var(--teal)',secs:[
+    {id:'ps-6d-1',name:'Components of attitude (ABC model)',qs:0},
+    {id:'ps-6d-2',name:'Attitude influences behavior and behavior influences attitude',qs:0},
+    {id:'ps-6d-3',name:'Cognitive dissonance theory',qs:0},
+    {id:'ps-6d-4',name:'Persuasion and Elaboration Likelihood Model (ELM)',qs:0},
+    {id:'ps-6d-5',name:'Conformity, obedience: Asch and Milgram studies',qs:0},
+    {id:'ps-6d-6',name:'Groupthink, social facilitation, social loafing, bystander effect',qs:0}
+  ]},
+  {id:'ka-ps-5',title:'P/S: FC7A -- Identity and Personality',src:'khan',color:'var(--teal)',secs:[
+    {id:'ps-7a-1',name:'Psychoanalytic theory: Freud, defense mechanisms, id/ego/superego',qs:0},
+    {id:'ps-7a-2',name:'Humanistic theory: Maslow, Rogers',qs:0},
+    {id:'ps-7a-3',name:'Behaviorist and biological theories of personality',qs:0},
+    {id:'ps-7a-4',name:'Trait theory (Big Five)',qs:0},
+    {id:'ps-7a-5',name:'Social cognitive theory, observational learning (Bobo doll)',qs:0},
+    {id:'ps-7a-6',name:'Self-concept, self-esteem, self-efficacy, locus of control',qs:0},
+    {id:'ps-7a-7',name:'Reciprocal determinism, personal control, learned helplessness',qs:0},
+    {id:'ps-7a-8',name:'Freud psychosexual development, Erikson psychosocial stages',qs:0},
+    {id:'ps-7a-9',name:'Kohlberg moral development, Vygotsky sociocultural development',qs:0}
+  ]},
+  {id:'ka-ps-6',title:'P/S: FC7B -- Psychological Disorders',src:'khan',color:'var(--teal)',secs:[
+    {id:'ps-7b-1',name:'Categories of mental disorders (DSM framework)',qs:0},
+    {id:'ps-7b-2',name:'Schizophrenia: symptoms, biological basis, dopamine hypothesis',qs:0},
+    {id:'ps-7b-3',name:'Depression, bipolar disorder, biological basis',qs:0},
+    {id:'ps-7b-4',name:'Anxiety disorders and OCD',qs:0},
+    {id:'ps-7b-5',name:'Dissociative, somatic symptom, and personality disorders',qs:0},
+    {id:'ps-7b-6',name:'Alzheimer\'s and Parkinson\'s: biological basis',qs:0}
+  ]},
+  {id:'ka-ps-7',title:'P/S: FC7C -- Social Processes and Behavior',src:'khan',color:'var(--teal)',secs:[
+    {id:'ps-7c-1',name:'Attribution theory: fundamental attribution error, actor-observer bias',qs:0},
+    {id:'ps-7c-2',name:'Stereotypes, stereotype threat, self-fulfilling prophecy',qs:0},
+    {id:'ps-7c-3',name:'Prejudice, discrimination, stigma',qs:0},
+    {id:'ps-7c-4',name:'Social perception: primacy/recency, halo effect, just world hypothesis',qs:0},
+    {id:'ps-7c-5',name:'Attraction: proximity, mere exposure, physical attraction, similarity',qs:0},
+    {id:'ps-7c-6',name:'Aggression, altruism, social support',qs:0},
+    {id:'ps-7c-7',name:'Harlow monkey experiments, secure/insecure attachment',qs:0}
+  ]},
+  {id:'ka-ps-8',title:'P/S: FC8 -- Nervous and Endocrine Systems (Bio of Behavior)',src:'khan',color:'var(--teal)',secs:[
+    {id:'ps-8-1',name:'Structure and function of the nervous system',qs:0},
+    {id:'ps-8-2',name:'Neurotransmitters: types, anatomy, function',qs:0},
+    {id:'ps-8-3',name:'Brain regions: cortex, subcortical, brainstem, cerebellum',qs:0},
+    {id:'ps-8-4',name:'Methods of studying the brain (EEG, fMRI, lesion studies)',qs:0},
+    {id:'ps-8-5',name:'Endocrine system and influence on behavior',qs:0},
+    {id:'ps-8-6',name:'Development: prenatal, neonatal, adolescent brain changes',qs:0},
+    {id:'ps-8-7',name:'Temperament, heritability, gene-environment interaction',qs:0}
+  ]},
+  {id:'ka-ps-9',title:'P/S: FC9 -- Learning and Conditioning',src:'khan',color:'var(--teal)',secs:[
+    {id:'ps-9-1',name:'Classical conditioning: Pavlov, neutral/conditioned/unconditioned stimuli',qs:0},
+    {id:'ps-9-2',name:'Classical conditioning: extinction, generalization, discrimination',qs:0},
+    {id:'ps-9-3',name:'Operant conditioning: reinforcement, punishment, schedules',qs:0},
+    {id:'ps-9-4',name:'Shaping, escape/avoidance learning, innate vs learned',qs:0},
+    {id:'ps-9-5',name:'Non-associative learning: habituation, sensitization',qs:0},
+    {id:'ps-9-6',name:'Biological constraints on learning',qs:0}
+  ]},
+  {id:'ka-ps-10',title:'P/S: FC10 -- Social Structure and Inequality',src:'khan',color:'var(--teal)',secs:[
+    {id:'ps-10-1',name:'Socialization, agents of socialization, folkways, mores, taboos',qs:0},
+    {id:'ps-10-2',name:'Social theories: functionalism, conflict theory, symbolic interactionism',qs:0},
+    {id:'ps-10-3',name:'Social constructionism, feminist theory, rational choice theory',qs:0},
+    {id:'ps-10-4',name:'George Herbert Mead (I and Me), Charles Cooley (looking-glass self)',qs:0},
+    {id:'ps-10-5',name:'Deviance: differential association, labelling theory, strain theory',qs:0},
+    {id:'ps-10-6',name:'Social institutions: education, family, religion, government, health',qs:0},
+    {id:'ps-10-7',name:'Organizations, bureaucracy, dramaturgical approach, impression management',qs:0},
+    {id:'ps-10-8',name:'Status, role strain, role conflict, primary and secondary groups',qs:0},
+    {id:'ps-10-9',name:'Demographic structure: age, class, race, ethnicity, gender, sexuality',qs:0},
+    {id:'ps-10-10',name:'Social mobility, poverty, social reproduction, social exclusion',qs:0},
+    {id:'ps-10-11',name:'Health disparities, environmental justice, intersectionality',qs:0},
+    {id:'ps-10-12',name:'Global inequality, residential segregation, class consciousness',qs:0},
+    {id:'ps-10-13',name:'Animal behavior: foraging, communication, mating, inclusive fitness',qs:0}
+  ]},
+  {id:'ka-research',title:'Khan Academy -- Research Methods (AAMC Gap)',src:'khan',color:'var(--teal)',secs:[
+    {id:'ka-r1',name:'PCR and its applications',qs:0},{id:'ka-r2',name:'Gel electrophoresis (DNA, SDS-PAGE)',qs:0},
+    {id:'ka-r3',name:'Blotting techniques: Southern, Northern, Western',qs:0},{id:'ka-r4',name:'ELISA and immunoprecipitation',qs:0},
+    {id:'ka-r5',name:'Chromatography and centrifugation',qs:0}
+  ]},
+  {id:'ka-molbio',title:'Khan Academy -- Molecular Biology Depth (AAMC Gap)',src:'khan',color:'var(--teal)',secs:[
+    {id:'ka-m1',name:'Epigenetics: methylation, histone modification, chromatin',qs:0},
+    {id:'ka-m2',name:'RNA processing: splicing, capping, poly-A tail',qs:0},
+    {id:'ka-m3',name:'Telomeres and telomerase',qs:0},
+    {id:'ka-m4',name:'CRISPR-Cas9 mechanism (AAMC tests awareness)',qs:0},
+    {id:'ka-m5',name:'Recombinant DNA techniques and cloning',qs:0},
+    {id:'ka-m6',name:'Single copy vs repetitive DNA, heterochromatin',qs:0}
+  ]}
+];
+
+function renderContent(){
+  if(!state.content)state.content={};
+  var totalDone=Object.keys(state.content).length;
+  setEl('ct-badge',totalDone+' / '+TOTAL_SECTIONS+' sections');
+  setBar('ct-global-bar',totalDone/TOTAL_SECTIONS*100);
+  var grid=document.getElementById('ct-grid');if(!grid)return;
+  grid.innerHTML=CONTENT_BOOKS.map(function(book){
+    var bd=book.secs.filter(function(s){return state.content[s.id];}).length;
+    var srcBadge=book.src==='khan'?'<span class="ct-source src-khan">KA Gap</span>':'<span class="ct-source src-tbr">TBR</span>';
+    return '<div class="ct-book"><div class="ct-title" style="color:'+book.color+'">'+book.title+srcBadge+'<span style="color:var(--text3)">'+bd+'/'+book.secs.length+'</span></div>'+
+      book.secs.map(function(sec){var ok=state.content[sec.id];return '<div class="ct-sec"><div class="ct-chk'+(ok?' ok':'')+'\" onclick="toggleContent(\''+sec.id+'\')"></div><div class="ct-nm">'+sec.name+'</div>'+(sec.qs>0?'<div class="ct-qs">'+sec.qs+'Qs</div>':'')+'</div>';}).join('')+'</div>';
+  }).join('');
+}
+function toggleContent(id){
+  if(!state.content)state.content={};
+  if(state.content[id])delete state.content[id];else state.content[id]=true;
+  saveState();renderContent();
+  var done=Object.keys(state.content).length;
+  setBar('ct-bar',done/TOTAL_SECTIONS*100);setEl('s-ct',Math.round(done/TOTAL_SECTIONS*100)+'%');setEl('s-ct-s',done+' of '+TOTAL_SECTIONS+' sections');
+  updateScore();
+}
+
+// ═══════════ ANKI ═══════════
+function renderAnkiHM(){
+  var el=document.getElementById('anki-hm');if(!el)return;
+  var log=state.ankiLog||[];
+  if(!log.length){el.innerHTML='<div style="color:var(--text3);font-family:\'DM Mono\',monospace;font-size:11px">No Anki data. Open as local file with Anki running, or log manually in Timer tab.</div>';return;}
+  var today=new Date(),days=[];
+  for(var i=69;i>=0;i--){var d=new Date(today);d.setDate(today.getDate()-i);var s=toDS(d);var ent=log.find(function(a){return a.date===s;});days.push({s:s,cards:ent?ent.cards||0:0,d:d});}
+  var mx=Math.max.apply(null,days.map(function(d){return d.cards;}))||1;
+  var weeks=[];for(var j=0;j<days.length;j+=7)weeks.push(days.slice(j,j+7));
+  var html='<div style="display:flex;gap:3px;align-items:flex-start">';
+  html+='<div style="display:flex;flex-direction:column;gap:3px;margin-top:16px">'+['M','T','W','T','F','S','S'].map(function(l){return '<div style="width:10px;height:11px;font-family:\'DM Mono\',monospace;font-size:8px;color:var(--text3);line-height:11px">'+l+'</div>';}).join('')+'</div>';
+  weeks.forEach(function(wk,wi){
+    var ml=wi%2===0?wk[0].d.toLocaleDateString('en-US',{month:'short'}):'';
+    html+='<div style="display:flex;flex-direction:column;gap:3px"><div style="height:14px;font-family:\'DM Mono\',monospace;font-size:8px;color:var(--text3)">'+ml+'</div>';
+    wk.forEach(function(day){
+      var intensity=day.cards>0?Math.max(0.15,day.cards/mx):0;
+      var bg=day.cards===0?'var(--card2)':'rgba(201,168,76,'+intensity+')';
+      var bo=day.s===todayStr()?'1px solid var(--gold)':'1px solid transparent';
+      html+='<div title="'+day.s+': '+day.cards+' cards" style="width:11px;height:11px;border-radius:2px;background:'+bg+';border:'+bo+';cursor:default;transition:transform 0.1s" onmouseover="this.style.transform=\'scale(1.4)\'" onmouseout="this.style.transform=\'scale(1)\'"></div>';
+    });
+    html+='</div>';
+  });
+  html+='</div><div style="display:flex;align-items:center;gap:6px;margin-top:8px"><span style="font-family:\'DM Mono\',monospace;font-size:9px;color:var(--text3)">Less</span>'+[0.1,0.3,0.5,0.7,1.0].map(function(i){return '<div style="width:10px;height:10px;border-radius:2px;background:rgba(201,168,76,'+i+')"></div>';}).join('')+'<span style="font-family:\'DM Mono\',monospace;font-size:9px;color:var(--text3)">More</span></div>';
+  el.innerHTML=html;
+}
+async function fetchAnki(){
+  var statusEl=document.getElementById('anki-st');
+  if(location.protocol!=='file:'){if(statusEl)statusEl.textContent='Manual mode (open as local file for auto-sync)';return;}
+  try{
+    var r=await fetch('http://localhost:8765',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({action:'version',version:6})});
+    var d=await r.json();
+    if(!d.result){if(statusEl)statusEl.textContent='Anki not open -- open Anki then refresh';return;}
+    if(statusEl)statusEl.textContent='Connected to Anki v'+d.result;
+    var reviewed=await fetch('http://localhost:8765',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({action:'findCards',version:6,params:{query:'rated:1'}})});
+    var rv=await reviewed.json();
+    var cnt=rv.result?rv.result.length:0;
+    setEl('a-td',cnt);
+    var ds=todayStr();if(!state.ankiLog)state.ankiLog=[];
+    var idx=state.ankiLog.findIndex(function(a){return a.date===ds;});
+    if(idx>=0)state.ankiLog[idx].cards=cnt;else state.ankiLog.push({date:ds,cards:cnt,id:uid()});
+    saveState();renderAnkiHM();
+  }catch(e){if(statusEl)statusEl.textContent='Cannot connect -- make sure Anki is open and AnkiConnect CORS includes this origin';}
+}
+
+// ═══════════ SYNC ═══════════
+function renderSync(){
+  var tok=localStorage.getItem('mcat_gh_tok')||'',gist=state.gistId||'';
+  document.getElementById('gh-tok').value=tok?'\u2022\u2022\u2022\u2022\u2022\u2022\u2022\u2022':'';
+  document.getElementById('gh-gist').value=gist;
+  var dot=document.getElementById('sync-dot'),txt=document.getElementById('sync-txt');
+  if(!tok){dot.style.background='var(--text3)';txt.textContent='Not configured';}
+  else if(gist){dot.style.background='var(--green)';txt.textContent='Configured -- Gist: '+gist.slice(0,8)+'...';}
+  else{dot.style.background='var(--gold)';txt.textContent='Token saved -- first sync will create Gist';}
+}
+function saveTok(){var tok=document.getElementById('gh-tok').value.trim();if(!tok||tok.startsWith('\u2022')){toast('Enter a valid token');return;}localStorage.setItem('mcat_gh_tok',tok);toast('Token saved. Syncing...');syncNow();}
+async function syncNow(){
+  var tok=localStorage.getItem('mcat_gh_tok');if(!tok){toast('No token -- go to Sync tab');return;}
+  var dot=document.getElementById('sync-dot'),txt=document.getElementById('sync-txt');
+  if(dot){dot.style.background='var(--gold)';dot.style.animation='pulse 1s infinite';}if(txt)txt.textContent='Syncing...';
+  try{
+    var content=JSON.stringify(state,null,2),res;
+    if(state.gistId){res=await fetch('https://api.github.com/gists/'+state.gistId,{method:'PATCH',headers:{'Authorization':'token '+tok,'Content-Type':'application/json'},body:JSON.stringify({files:{'mcat_data.json':{content:content}}})});}
+    else{res=await fetch('https://api.github.com/gists',{method:'POST',headers:{'Authorization':'token '+tok,'Content-Type':'application/json'},body:JSON.stringify({description:'MCAT Tracker -- Jermaine',public:false,files:{'mcat_data.json':{content:content}}})});}
+    var data=await res.json();
+    if(data.id){state.gistId=data.id;state.lastSync=new Date().toISOString();localStorage.setItem('mcat_v2',JSON.stringify(state));toast('Synced at '+new Date().toLocaleTimeString());renderSync();}
+    else toast('Sync failed: '+(data.message||'unknown'));
+  }catch(e){toast('Sync error: '+e.message);}
+}
+async function autoSync(){var tok=localStorage.getItem('mcat_gh_tok');if(tok&&state.gistId){try{await fetch('https://api.github.com/gists/'+state.gistId,{method:'PATCH',headers:{'Authorization':'token '+tok,'Content-Type':'application/json'},body:JSON.stringify({files:{'mcat_data.json':{content:JSON.stringify(state)}}})});}catch(e){}}}
+function exportD(){var b=new Blob([JSON.stringify(state,null,2)],{type:'application/json'}),u=URL.createObjectURL(b),a=document.createElement('a');a.href=u;a.download='mcat_backup_'+todayStr()+'.json';a.click();URL.revokeObjectURL(u);toast('Exported');}
+function importD(){try{var raw=document.getElementById('imp-json').value.trim(),imported=JSON.parse(raw);if(!imported.sessions){toast('Invalid format');return;}state=Object.assign(state,imported);saveState();toast('Imported');renderDash();}catch(e){toast('Invalid JSON');}}
+function clearAll(){if(!confirm('Clear ALL data?'))return;state={sessions:[],errors:[],days:{},carsLog:[],ankiLog:[],content:{},uworldPct:0,gistId:state.gistId,lastSync:null};saveState();renderDash();toast('Cleared');}
+
+// ═══════════ INIT ═══════════
+loadState();
+updateCD();
+setInterval(updateCD,60000);
+renderDash();
+renderSched();
+renderContent();
+renderErrors();
+fetchAnki();
+var md=document.getElementById('m-date');if(md)md.value=todayStr();
+</script>
+</body>
+</html>
